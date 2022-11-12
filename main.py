@@ -28,9 +28,9 @@ class Cat(db.Model):
 
 class Kitty(db.Model):
     # маленькое животное
-    id = db.Column(db.Integer, primary_key = True)
+    # id = db.Column(db.Integer, primary_key = True)
 
-    cat_id = db.Column(db.Integer, db.ForeignKey('cat.id', ondelete="CASCADE"))
+    cat_id = db.Column(db.Integer, db.ForeignKey('cat.id', ondelete="CASCADE"), primary_key = True)
     mom = db.Column(db.Integer, db.ForeignKey('cat.id', ondelete="CASCADE"))
     dad = db.Column(db.Integer, db.ForeignKey('cat.id', ondelete="CASCADE"))
 
@@ -48,7 +48,7 @@ class User(db.Model):
     email = db.Column(db.String(50), nullable=False)
     phone_number = db.Column(db.String(50), nullable=False)
     
-    gender = db.Column(db.Integer) # TODO: сделать проверку, что 0 или 1
+    gender = db.Column(db.Boolean) # TODO: сделать проверку, что 0 или 1
     
     birthday = db.Column(db.DateTime)
     
