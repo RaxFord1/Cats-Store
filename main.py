@@ -110,7 +110,20 @@ def register():
 @app.route("/login", methods=['POST, GET'])
 def login():
     
-    return render_template('index.html', task=False)
+@app.route("/cat", methods=['GET'])
+def cat():
+    cats = Cat.query.order_by(Cat.class_type).all()
+    return render_template('cat.html', cats=cats)
+
+@app.route("/kitty", methods=['GET'])
+def kitty():
+    kitties = Kitty.query.join(Cat, Cat.id == Kitty.cat_id).add_columns(
+        Cat.name, Cat.gender, Cat.available, Cat.birthday, 
+        Cat.description, Cat.class_type, Cat.color
+    ).all()
+
+    return render_template('cat.html', cats=kitties)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
