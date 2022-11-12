@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+    {% include 'templates/header.html' %}
+    <body>
+        {% include 'templates/navbar.html' %}
+        <section class="content">
+            {% block body %}
+
+            {% endblock %}
+            
+        </section>
+        {% include 'templates/login.html' %}
+    </body>
+</html>
