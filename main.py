@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, date
+from sqlalchemy import select
 
 app = Flask(__name__, template_folder="./resources/html")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
@@ -72,10 +73,6 @@ class Booking(db.Model):
     def __repr__(self):
         return '<Kitty %r>' % self.id
 
-@app.route("/")
-def index():
-    return render_template('index.html')
-
 @app.route("/register", methods=['POST'])
 def register():
     if request.method == 'POST':
@@ -107,9 +104,12 @@ def register():
     
     return render_template('index.html')
 
-@app.route("/login", methods=['POST, GET'])
+@app.route("/login", methods=['POST', 'GET'])
 def login():
     
+    return render_template('index.html', registered="asd")
+
+
 @app.route("/cat", methods=['GET'])
 def cat():
     cats = Cat.query.order_by(Cat.class_type).all()
@@ -124,6 +124,53 @@ def kitty():
 
     return render_template('cat.html', cats=kitties)
 
+@app.route("/")
+def index():
+    return render_template('index.html')
 
+
+def fillbd():
+    # todo: добавить картинку
+    cat1 = Cat(name="Кузя", description="Первый счастливчик в нашей маленькой воображаемой семье", 
+        class_type="A", gender=0, available=0, color="red", 
+        birthday=date(2002, 2, 17)
+    )
+
+    cat2 = Cat(name="Ася", description="Второй счастливчик в нашей уже не очень маленькой но всё ещё воображаемой семье", 
+        class_type="A", gender=1, available=1, color="white", 
+        birthday=date(2003, 12, 17)
+    )
+
+    cat3 = Cat(name="Руся", description="Маленькая девочка, родившаяся у наших самопровозглашённых Адама и Евы", 
+        class_type="B", gender=1, available=1, color="white", 
+        birthday=date(2004, 12, 17)
+    )
+
+    cat4 = Cat(name="Арчи", description="Большой мальчик, который чуть не разрушил вселенную своим появлением. Аж на столько дрожали стены от криков Аси", 
+        class_type="B", gender=0, available=1, color="white", 
+        birthday=date(2004, 12, 17)
+    )
+
+    cat_has_parents1 = Kitty(cat_id=3, mom=2, dad=1)
+    cat_has_parents2 = Kitty(cat_id=4, mom=2, dad=1)
+
+    user = User(first_name="Dima",last_name="Dzundza",email="dzun@gm",
+        phone_number="+38073354236",gender=0,birthday=date(2002, 2, 17),city="Mykolaiv")
+
+    try:
+        db.session.add(cat1)
+        db.session.add(cat2)
+        db.session.add(cat3)
+        db.session.add(cat4)
+        db.session.add(cat_has_parents1)
+        db.session.add(cat_has_parents2)
+        db.session.add(user)
+        db.session.commit()
+        return redirect('/')
+    except Exception as e:
+        return f'Couldnt insert {e}'
+    
 if __name__ == "__main__":
+    # fillbd()
+
     app.run(debug=True)
