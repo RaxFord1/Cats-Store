@@ -7,7 +7,19 @@ Installation steps
 
 3) conda activate web_adaptive
 
-4) pip install Flask
+4) conda install Flask
+
+5) conda install -c conda-forge flask-sqlalchemy
+
+Init db
+
+1) cd {project_path} 
+
+2) python
+
+3) from main import db
+
+4) db.create_all()
 
 Run server 
 
