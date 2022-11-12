@@ -1,3 +1,4 @@
+
 $("#login_section").hide();
 $("#register_section").hide();
 
