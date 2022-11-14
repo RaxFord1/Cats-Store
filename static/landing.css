@@ -28,15 +28,10 @@ body {
     margin: 0 auto;
 }
 
-.header {
-    background: #1f2937;
+.nav-bg, .footer, .header, .down-content-bg{
+    background: #80b1f5;
 }
-.footer{
-    background: #1f2937;
-}
-.nav-bg{
-    background: #1f2937;
-}
+
 nav {
     display: flex;
     align-items: center;
@@ -124,3 +119,94 @@ nav .navbar ul li a {
     align-self: flex-end;
 }
 
+.button-strt {
+  background-color: #c2f4fb;
+  border-radius: 100px;
+  box-shadow: rgba(44, 182, 187, 0.2) 0 -25px 18px -14px inset,rgba(44, 182, 187, 0.2) 0 1px 2px,rgba(44, 182, 187, 0.2) 0 2px 4px,rgba(44, 182, 187, 0.2) 0 4px 8px,rgba(44, 182, 187, 0.2) 0 8px 16px,rgba(44, 182, 187, 0.2) 0 16px 32px;
+  color: rgb(0, 98, 128);
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-strt:hover {
+  box-shadow: rgba(44, 182, 187, 0.2) 0 -25px 18px -14px inset,rgba(44, 182, 187, 0.2) 0 1px 2px,rgba(44, 182, 187, 0.2) 0 2px 4px,rgba(44, 182, 187, 0.2) 0 4px 8px,rgba(44, 182, 187, 0.2) 0 8px 16px,rgba(44, 182, 187, 0.2) 0 16px 32px;
+  transform: scale(1.05) rotate(-1deg);
+}
+.button-strt-2 {
+    background-color: rgb(128, 177, 245);
+    border-radius: 100px;
+    box-shadow: rgba(44, 182, 187, 0.2) 0 -25px 18px -14px inset,rgba(44, 182, 187, 0.2) 0 1px 2px,rgba(44, 182, 187, 0.2) 0 2px 4px,rgba(44, 182, 187, 0.2) 0 4px 8px,rgba(44, 182, 187, 0.2) 0 8px 16px,rgba(44, 182, 187, 0.2) 0 16px 32px;
+    color: rgb(0, 98, 128);
+    cursor: pointer;
+    display: inline-block;
+    font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+  .button-strt-2:hover {
+    box-shadow: rgba(44, 182, 187, 0.2) 0 -25px 18px -14px inset,rgba(44, 182, 187, 0.2) 0 1px 2px,rgba(44, 182, 187, 0.2) 0 2px 4px,rgba(44, 182, 187, 0.2) 0 4px 8px,rgba(44, 182, 187, 0.2) 0 8px 16px,rgba(44, 182, 187, 0.2) 0 16px 32px;
+    transform: scale(1.05) rotate(-1deg);
+  }
+  .button-strt-3 {
+    border-radius: 100px;
+    border: 3px solid rgb(128, 177, 245);
+    color: rgb(0, 98, 128);
+    cursor: pointer;
+    display: inline-block;
+    font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    font-size: 18px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    outline-style:initial;
+  }
+  
+  .button-strt-3:hover {
+    box-shadow: rgba(44, 182, 187, 0.2) 0 -25px 18px -14px inset,rgba(44, 182, 187, 0.2) 0 1px 2px,rgba(44, 182, 187, 0.2) 0 2px 4px,rgba(44, 182, 187, 0.2) 0 4px 8px,rgba(44, 182, 187, 0.2) 0 8px 16px,rgba(44, 182, 187, 0.2) 0 16px 32px;
+    transform: scale(1.05) rotate(-1deg);
+  }
+.button-card-r{
+    border-radius: 100px;
+}
+
+.arrow {
+    border: solid rgb(0, 98, 128);
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+  
+  .right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }
+
+  .card-indigo{
+    background:  linear-gradient(rgb(128, 177, 245), rgb(149, 187, 245), rgb(159, 197, 245));
+  }
+
+  .card-cyan{
+    background:  linear-gradient(rgb(194, 244, 251), rgb(165, 240, 250), rgb(135, 244, 251));
+  }
