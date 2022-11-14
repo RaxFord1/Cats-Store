@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 * {
     margin: 0;
     padding: 0;
@@ -111,7 +111,13 @@ nav .navbar ul li a {
     font-style: italic;
     color: #1f2937;
 }
-
+.slogan-content .slogan-bottom{
+    font-size: 25px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-style: italic;
+    color: #1f2937;
+}
 .slogan-content .author {
     font-size: 18px;
     font-weight: bold;
@@ -210,3 +216,6 @@ nav .navbar ul li a {
   .card-cyan{
     background:  linear-gradient(rgb(194, 244, 251), rgb(165, 240, 250), rgb(135, 244, 251));
   }
+.font-resizing{
+    font-size:25px;
+}
