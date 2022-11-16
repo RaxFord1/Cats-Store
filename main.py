@@ -109,11 +109,99 @@ def login():
     
     return render_template('index.html', registered="asd")
 
+    # name = db.Column(db.String(), nullable=False)
+    # description = db.Column(db.String(200), nullable=False)
 
-@app.route("/cat", methods=['GET'])
+    # class_type = db.Column(db.String(1), nullable=False)
+    # gender = db.Column(db.Boolean, nullable=False) # 0 - мальчик 1 - девочка TODO: сделать проверку, что 0 или 1
+    # available = db.Column(db.Boolean) # бронь 0 - забронирован 1 - свободно TODO: сделать проверку, что 0 или 1
+
+    # image = db.Column(db.BLOB)
+
+    # color = db.Column(db.String(50), nullable=False) # Окрас
+
+    # birthday = db.Column(db.DateTime, nullable=False) # День рождения
+
+
+@app.route("/cat", methods=['GET', 'POST'])
 def cat():
-    cats = Cat.query.order_by(Cat.class_type).all()
-    return render_template('cat.html', cats=cats)
+    if request.method == 'POST':
+        name = request.form['name']
+
+        description = request.form['description']
+        class_type = request.form['class_type']
+
+        available = request.form['available'] # 0/1
+        gender = request.form['gender'] # 0/1
+
+        color = request.form['color'] 
+        birthday = request.form['birthday']
+
+        image = request.form['image']
+
+        if gender == 'male':
+            gender = 0
+        else:
+            gender = 1
+
+        if available == '0':
+            available = 0
+        else:
+            available = 1
+
+        birthday = datetime.strptime(birthday, "%Y-%M-%d") 
+        
+        cat = Cat(name=name, description=description, class_type=class_type, 
+            available=available, image=image, gender=gender, color=color, 
+            birthday=birthday
+        )
+
+        print(cat)
+        try:
+            db.session.add(cat)
+            db.session.commit()
+            return redirect('/cats')
+        except Exception as e:
+            return f'Couldnt insert {e}'
+    else:
+        cats = Cat.query.order_by(Cat.class_type).all()
+        return render_template('cat.html', cats=cats)
+
+@app.route("/admin/cat", methods=['POST'])
+def add_cat():
+    name = request.form['name']
+    description = request.form['description']
+    class_type = request.form['class_type']
+    available = request.form['available'] # 0/1
+    gender = request.form['gender'] # 0/1
+    color = request.form['color'] 
+    birthday = request.form['birthday']
+    image = request.form['image']
+
+    if gender == 'male':
+        gender = 0
+    else:
+        gender = 1
+
+    if available == '0':
+        available = 0
+    else:
+        available = 1
+
+    birthday = datetime.strptime(birthday, "%Y-%M-%d") 
+    
+    cat = Cat(name=name, description=description, class_type=class_type, 
+        available=available, image=image, gender=gender, color=color, 
+        birthday=birthday
+    )
+
+    print(cat)
+    try:
+        db.session.add(cat)
+        db.session.commit()
+        return redirect('/cats')
+    except Exception as e:
+        return f'Couldnt insert {e}'
 
 @app.route("/kitty", methods=['GET'])
 def kitty():
