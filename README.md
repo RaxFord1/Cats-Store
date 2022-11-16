@@ -1,7 +1,8 @@
 "# web-adaptive" 
 
 Installation steps
-1) install conda
+
+0) install conda from website (https://docs.conda.io/en/latest/miniconda.html)
 
 2) conda create -n web_adaptive
 
@@ -10,6 +11,7 @@ Installation steps
 4) conda install Flask
 
 5) conda install -c conda-forge flask-sqlalchemy
+
 
 Init project and db
 
@@ -24,6 +26,7 @@ Init project and db
 4) db.create_all()
 
 5) exit()
+
 
 Run server 
 
