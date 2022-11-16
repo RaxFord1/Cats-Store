@@ -11,7 +11,9 @@ Installation steps
 
 5) conda install -c conda-forge flask-sqlalchemy
 
-Init db
+Init project and db
+
+0) git clone https://github.com/RaxFord1/web-adaptive.git
 
 1) cd {project_path} 
 
@@ -20,6 +22,8 @@ Init db
 3) from main import db
 
 4) db.create_all()
+
+5) exit()
 
 Run server 
 
