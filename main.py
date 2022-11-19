@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, make_response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, date
 from sqlalchemy import select
@@ -212,9 +212,19 @@ def kitty():
 
     return render_template('cat.html', cats=kitties)
 
-@app.route("/")
+@app.route("/index")
 def index():
     return render_template('index.html')
+
+@app.route("/")
+def landing():
+    return render_template('landing.html')
+
+@app.route("/gallery")
+def gallery():
+    return render_template('gallery.html')
+
+
 
 
 def fillbd():
