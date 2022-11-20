@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+ 
+{% block body %}
+
+<div class="container">  
+    <h1> Cat admin </h1>  
+    {% include 'admin/add_cat_view.html' %}
+  <br/>  
+  <table class="table table-bordered data-table">  
+    <thead>  
+      <th>Name</th>  
+      <th>Description</th>  
+      <th>Class type</th>  
+      <th>Color</th>  
+      <th>Gender</th>  
+      <th>Available</th>  
+      <th>Birthday</th>  
+      <th width="200px">Action</th>  
+    </thead>  
+    <tbody>  
+      
+    </tbody>  
+  </table>  
+     
+</div>  
+     
+<script type="text/javascript">
+
+    function addRow(id, name, description, class_type, gender, available, color, birthday) {
+        let gender_male_default = gender=="Male" ? '' : 'selected'
+        let gender_female_default = gender!="Male" ? 'selected' : ''
+
+        let available_default = available=="Available" ? '' : 'selected'
+        let not_available_default = available!="Available" ? 'selected' : ''
+
+        let birthday_value = Date.parse(birthday);
+
+        $(".data-table tbody").append("<tr>"+"<td hidden class='id_hidden'>"+id+"</td>"
+            +`<td data-type='name' data-value='${name}'><input type='text' value='${name}' required="" disabled/></td>
+            <td data-type='description' data-value='${description}'><input type='textarea' required="" value='${description}' disabled/></td>
+            <td data-type='class_type' data-value='${class_type}'><input type='textarea' required="" value='${class_type}' disabled/></td>
+            <td data-type='color' data-value='${color}'><input type='textarea' value='${color}' required="" disabled/></td>
+
+            <td data-type='gender' data-value='${gender}'><select name="gender" class="form-control" required="" disabled>
+                    <option value="Male" ${gender_male_default}>Male</option>
+                    <option value="Female" ${gender_female_default}>Female</option>
+                </select></td>
+            <td data-type='available' data-value='${available}'><select name="available" class="form-control" required="" disabled>
+                    <option value="Available" ${available_default}>Available</option>
+                    <option value="Not available" ${not_available_default}>Not available</option>
+                </select></td>
+
+            <td data-type='birthday' data-value='${birthday}'><input type="date" name="birthday" value="${birthday}" required="" disabled></td>`
+            +"<td data-type='buttons'><button class='btn btn-info btn-xs btn-edit'>Edit</button><button class='btn btn-danger btn-xs btn-delete'>Delete</button></td></tr>");
+    }
+
+    function loadAllCats() {
+        $.get("/cats.json", (data) => {
+            data.forEach(element => {
+                addRow(element.id, element.name, element.description, element.class_type,
+                    element.gender, element.available, element.color, element.birthday)
+            });
+            console.log(data)
+        })
+    }
+    loadAllCats()
+
+    function getCat(id) {
+        $.get("/cat/"+id, (element) => {
+            addRow(element.id, element.name, element.description, element.class_type,
+                    element.gender, element.available, element.color, element.birthday)
+            console.log(data)
+        })
+    }
+
+    $("form").submit(function(e){
+        e.preventDefault();
+        console.log(this)
+
+        formData = new FormData(e.target);
+        console.log(formData)
+
+        // data = $(this).serializeArray()
+        data = Object.fromEntries(formData)
+        console.log(data)
+
+        $.ajax({
+            type: "POST",
+            url: "/admin/cat",
+            data: data,
+            // contentType: "application/json",
+            // dataType: 'json',
+            success: function(result) {
+                getCat(result.id)
+            }
+        });
+    });
+
+    $("body").on("click", ".btn-delete", function(){
+        let tr = $(this).parents("tr");
+        let id = tr.find(".id_hidden").html();
+
+        $.ajax({
+            type: "DELETE",
+            url: "/admin/cat/"+id,
+            contentType: "application/json",
+            dataType: 'json',
+            success: function(result) {
+                console.log(result)
+            }
+        });
+
+        tr.remove();
+    });
+
+    $("body").on("click", ".btn-edit", function() {
+        let tr = $(this).parents("tr")
+
+        let name = tr.find('[data-type="name"]');
+        let description = tr.find('[data-type="description"]');
+        let class_type = tr.find('[data-type="class_type"]');
+        let gender = tr.find('[data-type="gender"]');
+        let available = tr.find('[data-type="available"]');
+        let color = tr.find('[data-type="color"]');
+        let birthday = tr.find('[data-type="birthday"]');
+        let buttons = tr.find('[data-type="buttons"]');
+
+        name.find('input').prop("disabled", false);
+        description.find('input').prop("disabled", false);
+        class_type.find('input').prop("disabled", false);
+        color.find('input').prop("disabled", false);
+        gender.find('select').prop("disabled", false);
+        available.find('select').prop("disabled", false);
+        birthday.find('input').prop("disabled", false);
+
+        buttons.html("<button class='btn btn-info btn-xs btn-update'>Update</button><button class='btn btn-warning btn-xs btn-cancel'>Cancel</button>")
+    });
+
+
+    function disable(tr) {
+        let name = tr.find('[data-type="name"]');
+        let description = tr.find('[data-type="description"]');
+        let class_type = tr.find('[data-type="class_type"]');
+        let gender = tr.find('[data-type="gender"]');
+        let available = tr.find('[data-type="available"]');
+        let color = tr.find('[data-type="color"]');
+        let birthday = tr.find('[data-type="birthday"]');
+        let buttons = tr.find('[data-type="buttons"]');
+
+        name.find('input').prop("disabled", true);
+        description.find('input').prop("disabled", true);
+        class_type.find('input').prop("disabled", true);
+        color.find('input').prop("disabled", true);
+        gender.find('select').prop("disabled", true);
+        available.find('select').prop("disabled", true);
+        birthday.find('input').prop("disabled", true);
+    }
+
+    function cancel(tr){
+        let name = tr.find('[data-type="name"]');
+        let description = tr.find('[data-type="description"]');
+        let class_type = tr.find('[data-type="class_type"]');
+        let gender = tr.find('[data-type="gender"]');
+        let available = tr.find('[data-type="available"]');
+        let color = tr.find('[data-type="color"]');
+        let birthday = tr.find('[data-type="birthday"]');
+        let buttons = tr.find('[data-type="buttons"]');
+
+        name.find('input').val(name.data("value"));
+        description.find('input').val(description.data("value"));
+        class_type.find('input').val(class_type.data("value"));
+        color.find('input').val(color.data("value"));
+        gender.find('select').val(gender.data("value")).change();
+        available.find('select').val(available.data("value")).change();
+        birthday.find('input').val(birthday.data("value"));
+
+        disable(tr)
+
+        buttons.html("<button class='btn btn-info btn-xs btn-edit'>Edit</button><button class='btn btn-danger btn-xs btn-delete'>Delete</button>")
+    }
+
+    $("body").on("click", ".btn-cancel", function(){
+        let tr = $(this).parents("tr")
+        cancel(tr)
+    });
+
+    $("body").on("click", ".btn-update", function(){
+        let tr = $(this).parents("tr")
+
+        let id = tr.find(".id_hidden").html();
+        let name = tr.find('[data-type="name"]');
+        let description = tr.find('[data-type="description"]');
+        let class_type = tr.find('[data-type="class_type"]');
+        let color = tr.find('[data-type="color"]');
+
+        let gender = tr.find('[data-type="gender"]');
+        let available = tr.find('[data-type="available"]');
+
+        let birthday = tr.find('[data-type="birthday"]');
+        let buttons = tr.find('[data-type="buttons"]');
+
+        new_data = {
+            'id': id,
+            'name': name.children("input").val(),
+            'description': description.children("input").val(),
+            'class_type': class_type.children("input").val(),
+            'color': color.children("input").val(),
+            'gender': gender.children("select").val(),
+            'available': available.children("select").val(),
+            'birthday': birthday.children("input").val(),
+        }
+
+        $.ajax({
+            type: "UPDATE",
+            url: "/admin/cat/"+id,
+            data: JSON.stringify(new_data),
+            contentType: "application/json",
+            dataType: 'json',
+            success: function(result) {
+                console.log(result)
+                if (result.result == "Ok") {
+                    disable(tr)
+                    buttons.html("<button class='btn btn-info btn-xs btn-edit'>Edit</button><button class='btn btn-danger btn-xs btn-delete'>Delete</button>")
+                } else {
+                    cancel(tr)
+                }
+            }
+        });
+
+
+    });  
+      
+</script>  
+
+{% endblock %}
