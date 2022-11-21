@@ -6,24 +6,29 @@
     <h1> Cat admin </h1>  
     {% include 'admin/add_cat_view.html' %}
   <br/>  
-  <table class="table table-bordered data-table">  
-    <thead>  
-      <th>Name</th>  
-      <th>Description</th>  
-      <th>Class type</th>  
-      <th>Color</th>  
-      <th>Gender</th>  
-      <th>Available</th>  
-      <th>Birthday</th>  
-      <th width="200px">Action</th>  
-    </thead>  
-    <tbody>  
-      
-    </tbody>  
-  </table>  
+ 
+ 
      
 </div>  
-     
+<div class = "d-flex align-items-center flex-column">
+    <div class = "col">
+        <table class="table table-bordered data-table">  
+            <thead>  
+              <th class="col-1" scope="col">Name</th>  
+              <th class="col-3" scope="col">Description</th>  
+              <th class="col-1" scope="col">Class type</th>  
+              <th class="col-1" scope="col">Color</th>  
+              <th class="col-1" scope="col">Gender</th>  
+              <th class="col-2" scope="col">Available</th>  
+              <th class="col-2" scope="col">Birthday</th>  
+              <th class="col-1" scope="col">Action</th>  
+            </thead>  
+            <tbody>  
+              
+            </tbody>  
+          </table>  
+    </div>    
+  </div>    
 <script type="text/javascript">
 
     function addRow(id, name, description, class_type, gender, available, color, birthday) {
@@ -37,7 +42,7 @@
 
         $(".data-table tbody").append("<tr>"+"<td hidden class='id_hidden'>"+id+"</td>"
             +`<td data-type='name' data-value='${name}'><input type='text' value='${name}' required="" disabled/></td>
-            <td data-type='description' data-value='${description}'><input type='textarea' required="" value='${description}' disabled/></td>
+            <td data-type='description' data-value='${description}'><textarea class ="form-control" cols ="30" rows = "6" placeholder='${description}'disabled/></textarea></td>
             <td data-type='class_type' data-value='${class_type}'><input type='textarea' required="" value='${class_type}' disabled/></td>
             <td data-type='color' data-value='${color}'><input type='textarea' value='${color}' required="" disabled/></td>
 
