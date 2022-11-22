@@ -37,10 +37,11 @@ $("#navbar_login_button").on( "click", function( event ) {
     $(".exit-login-bg").show();
 });
 
-$(".btn-form-photo").on( "click", function( event ) {
+$("body").on("click", ".btn-form-photo", function(){
     $(".form-conteiner").show();
     $(".form-close-bg").show();
 });
+
 $(".exit-icon").on( "click", function( event ) {
     $(".form-conteiner").hide();
     $(".form-close-bg").hide();
