@@ -1,3 +1,5 @@
+import uuid
+
 from flask import Flask, render_template, request, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, date
@@ -7,6 +9,7 @@ app = Flask(__name__, template_folder="./resources/html")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
 
+app.config['db_images'] = './resources/cats'
 
 class Cat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -18,7 +21,7 @@ class Cat(db.Model):
     gender = db.Column(db.Boolean, nullable=False)  # 0 - мальчик 1 - девочка TODO: сделать проверку, что 0 или 1
     available = db.Column(db.Boolean)  # бронь 0 - забронирован 1 - свободно TODO: сделать проверку, что 0 или 1
 
-    image = db.Column(db.BLOB)
+    image = db.Column(db.String())
 
     color = db.Column(db.String(50), nullable=False)  # Окрас
 
@@ -135,19 +138,6 @@ def register():
 @app.route("/login", methods=['POST', 'GET'])
 def login():
     return render_template('index.html', registered="asd")
-
-    # name = db.Column(db.String(), nullable=False)
-    # description = db.Column(db.String(200), nullable=False)
-
-    # class_type = db.Column(db.String(1), nullable=False)
-    # gender = db.Column(db.Boolean, nullable=False) # 0 - мальчик 1 - девочка TODO: сделать проверку, что 0 или 1
-    # available = db.Column(db.Boolean) # бронь 0 - забронирован 1 - свободно TODO: сделать проверку, что 0 или 1
-
-    # image = db.Column(db.BLOB)
-
-    # color = db.Column(db.String(50), nullable=False) # Окрас
-
-    # birthday = db.Column(db.DateTime, nullable=False) # День рождения
 
 
 @app.route("/cats", methods=['GET'])
@@ -288,7 +278,12 @@ def admin_cat():
     return render_template('admin_cat.html')
 
 
+def createdb():
+    db.create_all()
+    exit()
+
 def fillbd():
+    
     # todo: добавить картинку
     cat1 = Cat(name="Кузя", description="Первый счастливчик в нашей маленькой воображаемой семье",
                class_type="A", gender=0, available=0, color="red",
@@ -297,7 +292,7 @@ def fillbd():
 
     cat2 = Cat(name="Ася",
                description="Второй счастливчик в нашей уже не очень маленькой но всё ещё воображаемой семье",
-               class_type="A", gender=1, available=1, color="white",
+               class_type="A", gender=1, available=0, color="white",
                birthday=date(2003, 12, 17)
                )
 
@@ -327,12 +322,13 @@ def fillbd():
         db.session.add(cat_has_parents2)
         db.session.add(user)
         db.session.commit()
-        return redirect('/')
+        
     except Exception as e:
-        return f'Couldnt insert {e}'
+        print(f'Couldnt insert {e}')
+    exit()
 
 
 if __name__ == "__main__":
-    #fillbd()
+    # fillbd()
 
     app.run(debug=True)
