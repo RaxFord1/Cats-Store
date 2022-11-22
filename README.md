@@ -12,6 +12,8 @@ Installation steps
 
 5) conda install -c conda-forge flask-sqlalchemy
 
+6) conda install pytest
+
 
 Init project and db
 
