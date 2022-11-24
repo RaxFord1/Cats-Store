@@ -515,7 +515,6 @@ def fillbd():
         print(f'Couldnt insert {e}')
     exit()
 
-
 if __name__ == "__main__":
     #fillbd()
 
