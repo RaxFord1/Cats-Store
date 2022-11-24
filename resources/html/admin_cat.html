@@ -31,7 +31,7 @@
 
     <div class="form-conteiner">
         <div class="exit-icon"><a>x</a></div>
-        <form action="POST">
+        
             <div class="title">
                 <h2>Edit cats photos</h2>
             </div>
@@ -52,25 +52,21 @@
                     <img src="../static/images/QJUZoK6.png" width="256px" height="256px" alt="#">
                     <button class='btn btn-danger btn-xs btn-delete-photo'>Delete</button>
                 </div>
-                <div class="image-item">
-                    <img src="../static/images/QJUZoK6.png" width="256px" height="256px" alt="#">
-                    <button class='btn btn-danger btn-xs btn-delete-photo'>Delete</button>
-                </div>
-                <div class="image-item">
-                    <img src="../static/images/QJUZoK6.png" width="256px" height="256px" alt="#">
-                    <button class='btn btn-danger btn-xs btn-delete-photo'>Delete</button>
-                </div>
+                
 
             </div>
-            <div class="form-input">
-                <label for="input-image">Select image</label>
-                <input id="input-image" type="file">
-            </div>
+            <form method="POST" action="/upload_file" enctype="multipart/form-data">
+                <div class="form-input">
+                    <label for="input-image">Select image</label>
+                    <input id="input-image" type="file" name="file">
+                    <button class='btn btn-info btn-xs btn-submit'>Submit</button>
+                </div>
+                <input type="hidden" id="cat_id" name="cat_id" value="" />
+            </form>
             <div class="form-button">
-                <button class='btn btn-info btn-xs btn-submit'>Submit</button>
                 <button class='btn btn-danger btn-xs btn-exit'>Exit</button>
             </div>
-        </form>
+        
     </div>
 </div>
 
@@ -226,7 +222,7 @@
 
         disable(tr)
 
-        buttons.html("<button class='btn btn-info btn-xs btn-edit'>Edit</button><button class='btn btn-danger btn-xs btn-delete'>Delete</button>")
+        buttons.html("<button class='btn btn-info btn-xs btn-edit'>Edit</button><button class='btn btn-warning btn-xs btn-form-photo'>Form</button><button class='btn btn-danger btn-xs btn-delete'>Delete</button>")
     }
 
     $("body").on("click", ".btn-cancel", function(){
@@ -282,4 +278,6 @@
       
 </script>  
 
+
+<div id="asd"></div>
 {% endblock %}
