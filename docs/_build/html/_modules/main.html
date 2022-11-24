@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>main &mdash; web-adaptive 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> web-adaptive
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">web-adaptive</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">main</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for main</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">uuid</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">redirect</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">from</span> <span class="nn">flask_sqlalchemy</span> <span class="kn">import</span> <span class="n">SQLAlchemy</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">date</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">select</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">template_folder</span><span class="o">=</span><span class="s2">&quot;./resources/html&quot;</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SQLALCHEMY_DATABASE_URI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;sqlite:///test.db&#39;</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">SQLAlchemy</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;db_images&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;./resources/cats&#39;</span>
+
+
+<div class="viewcode-block" id="Cat"><a class="viewcode-back" href="../main.html#main.Cat">[docs]</a><span class="k">class</span> <span class="nc">Cat</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Take data from table and return it in easily serializable format</span>
+<span class="sd">    Id, Name and Description, Type, Gender and Availability, Image, Colour, Birthday and Date creation of Cat&quot;&quot;&quot;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">200</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">class_type</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">gender</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Boolean</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># 0 - мальчик 1 - девочка TODO: сделать проверку, что 0 или 1</span>
+    <span class="n">available</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Boolean</span><span class="p">)</span>  <span class="c1"># бронь 0 - забронирован 1 - свободно TODO: сделать проверку, что 0 или 1</span>
+
+    <span class="n">image</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">())</span>
+
+    <span class="n">color</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Окрас</span>
+
+    <span class="n">birthday</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># День рождения</span>
+    <span class="n">date_created</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Serialization of data</span>
+<span class="sd">        Return object data in easily serializable format&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="s1">&#39;class_type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_type</span><span class="p">,</span>
+            <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Male&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gender</span> <span class="o">==</span> <span class="kc">False</span> <span class="k">else</span> <span class="s1">&#39;Female&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;available&#39;</span><span class="p">:</span> <span class="s1">&#39;Not available&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">available</span> <span class="o">==</span> <span class="kc">False</span> <span class="k">else</span> <span class="s1">&#39;Available&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span>
+            <span class="s1">&#39;birthday&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">birthday</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">serialize_many2many</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Serialization of data &#39;many to many&#39;</span>
+<span class="sd">        Return object&#39;s relations in easily serializable format.</span>
+<span class="sd">        NB! Calls many2many&#39;s serialize property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">serialize</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">many2many</span><span class="p">]</span>
+
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return string with Id of cat&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;Cat </span><span class="si">%r</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span></div>
+
+
+<div class="viewcode-block" id="Kitty"><a class="viewcode-back" href="../main.html#main.Kitty">[docs]</a><span class="k">class</span> <span class="nc">Kitty</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Take data from table</span>
+<span class="sd">    Id, Mom and Dad, Date creation of Kitty&quot;&quot;&quot;</span>
+    <span class="c1"># маленькое животное</span>
+    <span class="c1"># id = db.Column(db.Integer, primary_key = True)</span>
+    <span class="n">cat_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;cat.id&#39;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">),</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">mom</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;cat.id&#39;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">))</span>
+    <span class="n">dad</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;cat.id&#39;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">))</span>
+
+    <span class="n">date_created</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return string with id of Kitty&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;Kitty </span><span class="si">%r</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span></div>
+
+
+<div class="viewcode-block" id="User"><a class="viewcode-back" href="../main.html#main.User">[docs]</a><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Take data from table</span>
+<span class="sd">    Id, Name and Surname, Email and phone, Gender, Birthday, City, Date creation of User&quot;&quot;&quot;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">first_name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">email</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">phone_number</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">gender</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Boolean</span><span class="p">)</span>  <span class="c1"># TODO: сделать проверку, что 0 или 1</span>
+
+    <span class="n">birthday</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">)</span>
+
+    <span class="n">city</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">date_created</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return string with id of User&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;User </span><span class="si">%r</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span></div>
+
+<div class="viewcode-block" id="Booking"><a class="viewcode-back" href="../main.html#main.Booking">[docs]</a><span class="k">class</span> <span class="nc">Booking</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Take data from table</span>
+<span class="sd">    Id, Cat id, User id, Comment, Date creation of Booking&quot;&quot;&quot;</span>
+    <span class="c1"># маленькое животное</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">cat_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;cat.id&#39;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">))</span>
+    <span class="n">user_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;user.id&#39;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s2">&quot;CASCADE&quot;</span><span class="p">))</span>
+    <span class="n">comment</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="mi">200</span><span class="p">))</span>
+
+    <span class="n">date_created</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return string with id of Kitty&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;Kitty </span><span class="si">%r</span><span class="s1">&gt;&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span></div>
+
+
+<div class="viewcode-block" id="register"><a class="viewcode-back" href="../main.html#main.register">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/register&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">register</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Setting page and path&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">first_name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;first_name&#39;</span><span class="p">]</span>
+        <span class="n">last_name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;last_name&#39;</span><span class="p">]</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span>
+        <span class="n">phone_number</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;phone_number&#39;</span><span class="p">]</span>
+        <span class="n">gender</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">]</span>  <span class="c1"># TODO: сделать проверку, что 0 или 1</span>
+        <span class="k">if</span> <span class="n">gender</span> <span class="o">==</span> <span class="s1">&#39;male&#39;</span><span class="p">:</span>
+            <span class="n">gender</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gender</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">birthday</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;birthday&#39;</span><span class="p">],</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">city</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span>
+
+        <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">first_name</span><span class="o">=</span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="n">last_name</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">,</span>
+                    <span class="n">phone_number</span><span class="o">=</span><span class="n">phone_number</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="n">gender</span><span class="p">,</span> <span class="n">birthday</span><span class="o">=</span><span class="n">birthday</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="n">city</span>
+                    <span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">first_name</span><span class="p">,</span> <span class="n">last_name</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">phone_number</span><span class="p">,</span> <span class="n">gender</span><span class="p">,</span> <span class="n">birthday</span><span class="p">,</span> <span class="n">city</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># TODO: навешать логики, если юзер уже создан</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Couldnt insert </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="login"><a class="viewcode-back" href="../main.html#main.login">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/login&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">login</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Setting page and path&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">,</span> <span class="n">registered</span><span class="o">=</span><span class="s2">&quot;asd&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cats"><a class="viewcode-back" href="../main.html#main.cats">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/cats&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">cats</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Setting page and path&quot;&quot;&quot;</span>
+    <span class="n">cats</span> <span class="o">=</span> <span class="n">Cat</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">Cat</span><span class="o">.</span><span class="n">class_type</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;cat.html&#39;</span><span class="p">,</span> <span class="n">cats</span><span class="o">=</span><span class="n">cats</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cats_json"><a class="viewcode-back" href="../main.html#main.cats_json">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/cats.json&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">cats_json</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Setting page and path&quot;&quot;&quot;</span>
+    <span class="n">cats</span> <span class="o">=</span> <span class="n">Cat</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">Cat</span><span class="o">.</span><span class="n">class_type</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">allpets</span> <span class="o">=</span> <span class="p">[</span><span class="n">cat</span><span class="o">.</span><span class="n">serialize</span> <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">cats</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">allpets</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cat"><a class="viewcode-back" href="../main.html#main.cat">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/cat/&lt;int:id&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">cat</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Setting page and path&quot;&quot;&quot;</span>
+    <span class="n">cat</span> <span class="o">=</span> <span class="n">Cat</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">serialize</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="admin_cat_post"><a class="viewcode-back" href="../main.html#main.admin_cat_post">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/admin/cat&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">admin_cat_post</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Setting page and path&quot;&quot;&quot;</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span>
+    <span class="n">class_type</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;class_type&#39;</span><span class="p">]</span>
+    <span class="n">available</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;available&#39;</span><span class="p">]</span>  <span class="c1"># 0/1</span>
+    <span class="n">gender</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">]</span>  <span class="c1"># 0/1</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span>
+    <span class="n">birthday</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;birthday&#39;</span><span class="p">]</span>
+    <span class="c1"># image = form[&#39;image&#39;]</span>
+
+    <span class="k">if</span> <span class="n">gender</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;male&#39;</span><span class="p">:</span>
+        <span class="n">gender</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">gender</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">available</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;available&#39;</span><span class="p">:</span>
+        <span class="n">available</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">available</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">birthday</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">birthday</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">cat</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span> <span class="n">class_type</span><span class="o">=</span><span class="n">class_type</span><span class="p">,</span>
+              <span class="n">available</span><span class="o">=</span><span class="n">available</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="nb">bytes</span><span class="p">([]),</span> <span class="n">gender</span><span class="o">=</span><span class="n">gender</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+              <span class="n">birthday</span><span class="o">=</span><span class="n">birthday</span>
+              <span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">cat</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cat</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="s2">&quot;Ok&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">cat</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Couldnt insert </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="admin_cat_change"><a class="viewcode-back" href="../main.html#main.admin_cat_change">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/admin/cat/&lt;int:id&gt;&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="s1">&#39;UPDATE&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">admin_cat_change</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Setting page and path&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;GET&#39;</span><span class="p">:</span>
+        <span class="n">cat</span> <span class="o">=</span> <span class="n">Cat</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">serialize</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;DELETE&#39;</span><span class="p">:</span>
+        <span class="n">cat</span> <span class="o">=</span> <span class="n">Cat</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="s2">&quot;Ok&quot;</span><span class="p">}</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Couldnt delete </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Update</span>
+        <span class="n">cat</span> <span class="o">=</span> <span class="n">Cat</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span>
+        <span class="n">class_type</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;class_type&#39;</span><span class="p">]</span>
+        <span class="n">available</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;available&#39;</span><span class="p">]</span>  <span class="c1"># 0/1</span>
+        <span class="n">gender</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">]</span>  <span class="c1"># 0/1</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span>
+        <span class="n">birthday</span> <span class="o">=</span> <span class="n">form</span><span class="p">[</span><span class="s1">&#39;birthday&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">gender</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;male&#39;</span><span class="p">:</span>
+            <span class="n">gender</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gender</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">available</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;available&#39;</span><span class="p">:</span>
+            <span class="n">available</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">available</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">birthday</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">birthday</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">cat</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">cat</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="n">cat</span><span class="o">.</span><span class="n">class_type</span> <span class="o">=</span> <span class="n">class_type</span>
+        <span class="n">cat</span><span class="o">.</span><span class="n">available</span> <span class="o">=</span> <span class="n">available</span>
+        <span class="n">cat</span><span class="o">.</span><span class="n">gender</span> <span class="o">=</span> <span class="n">gender</span>
+        <span class="n">cat</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="n">cat</span><span class="o">.</span><span class="n">birthday</span> <span class="o">=</span> <span class="n">birthday</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="s2">&quot;Ok&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">cat</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Couldnt insert </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="kitty"><a class="viewcode-back" href="../main.html#main.kitty">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/kitty&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">kitty</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Setting page and path&quot;&quot;&quot;</span>
+    <span class="n">kitties</span> <span class="o">=</span> <span class="n">Kitty</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Cat</span><span class="p">,</span> <span class="n">Cat</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">Kitty</span><span class="o">.</span><span class="n">cat_id</span><span class="p">)</span><span class="o">.</span><span class="n">add_columns</span><span class="p">(</span>
+        <span class="n">Cat</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">Cat</span><span class="o">.</span><span class="n">gender</span><span class="p">,</span> <span class="n">Cat</span><span class="o">.</span><span class="n">available</span><span class="p">,</span> <span class="n">Cat</span><span class="o">.</span><span class="n">birthday</span><span class="p">,</span>
+        <span class="n">Cat</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">Cat</span><span class="o">.</span><span class="n">class_type</span><span class="p">,</span> <span class="n">Cat</span><span class="o">.</span><span class="n">color</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;cat.html&#39;</span><span class="p">,</span> <span class="n">cats</span><span class="o">=</span><span class="n">kitties</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="index"><a class="viewcode-back" href="../main.html#main.index">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/index&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Setting page and path&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="landing"><a class="viewcode-back" href="../main.html#main.landing">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">landing</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Setting page and path&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;landing.html&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="gallery"><a class="viewcode-back" href="../main.html#main.gallery">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/gallery&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">gallery</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Setting page and path&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;gallery.html&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="admin_cat"><a class="viewcode-back" href="../main.html#main.admin_cat">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/admin&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">admin_cat</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Setting page and path&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;admin_cat.html&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="createdb"><a class="viewcode-back" href="../main.html#main.createdb">[docs]</a><span class="k">def</span> <span class="nf">createdb</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Create DB&quot;&quot;&quot;</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">create_all</span><span class="p">()</span>
+    <span class="n">exit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="fillbd"><a class="viewcode-back" href="../main.html#main.fillbd">[docs]</a><span class="k">def</span> <span class="nf">fillbd</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Filling DB&quot;&quot;&quot;</span>
+    <span class="c1"># todo: добавить картинку</span>
+    <span class="n">cat1</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Кузя&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Первый счастливчик в нашей маленькой воображаемой семье&quot;</span><span class="p">,</span>
+               <span class="n">class_type</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">available</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+               <span class="n">birthday</span><span class="o">=</span><span class="n">date</span><span class="p">(</span><span class="mi">2002</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
+               <span class="p">)</span>
+
+    <span class="n">cat2</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Ася&quot;</span><span class="p">,</span>
+               <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Второй счастливчик в нашей уже не очень маленькой но всё ещё воображаемой семье&quot;</span><span class="p">,</span>
+               <span class="n">class_type</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">available</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+               <span class="n">birthday</span><span class="o">=</span><span class="n">date</span><span class="p">(</span><span class="mi">2003</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
+               <span class="p">)</span>
+
+    <span class="n">cat3</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Руся&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Маленькая девочка, родившаяся у наших самопровозглашённых Адама и Евы&quot;</span><span class="p">,</span>
+               <span class="n">class_type</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">available</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+               <span class="n">birthday</span><span class="o">=</span><span class="n">date</span><span class="p">(</span><span class="mi">2004</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
+               <span class="p">)</span>
+
+    <span class="n">cat4</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Арчи&quot;</span><span class="p">,</span>
+               <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Большой мальчик, который чуть не разрушил вселенную своим появлением. Аж на столько дрожали стены от криков Аси&quot;</span><span class="p">,</span>
+               <span class="n">class_type</span><span class="o">=</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">available</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+               <span class="n">birthday</span><span class="o">=</span><span class="n">date</span><span class="p">(</span><span class="mi">2004</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
+               <span class="p">)</span>
+
+    <span class="n">cat_has_parents1</span> <span class="o">=</span> <span class="n">Kitty</span><span class="p">(</span><span class="n">cat_id</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">mom</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dad</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">cat_has_parents2</span> <span class="o">=</span> <span class="n">Kitty</span><span class="p">(</span><span class="n">cat_id</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">mom</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dad</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;Dima&quot;</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Dzundza&quot;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="s2">&quot;dzun@gm&quot;</span><span class="p">,</span>
+                <span class="n">phone_number</span><span class="o">=</span><span class="s2">&quot;+38073354236&quot;</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">birthday</span><span class="o">=</span><span class="n">date</span><span class="p">(</span><span class="mi">2002</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">17</span><span class="p">),</span> <span class="n">city</span><span class="o">=</span><span class="s2">&quot;Mykolaiv&quot;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cat1</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cat2</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cat3</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cat4</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cat_has_parents1</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cat_has_parents2</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Couldnt insert </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">exit</span><span class="p">()</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># fillbd()</span>
+
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kus-Kus.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
