@@ -72,7 +72,8 @@
             </div>
         </form>
     </div>
-  </div>    
+</div>
+
 <script type="text/javascript">
 
     function addRow(id, name, description, class_type, gender, available, color, birthday) {
@@ -86,7 +87,7 @@
 
         $(".data-table tbody").append("<tr>"+"<td hidden class='id_hidden'>"+id+"</td>"
             +`<td data-type='name' data-value='${name}'><input type='text' value='${name}' required="" disabled/></td>
-            <td data-type='description' data-value='${description}'><textarea class ="form-control" cols ="30" rows = "6" placeholder='${description}'disabled/></textarea></td>
+            <td data-type='description' data-value='${description}'><textarea class ="form-control" cols ="30" rows = "6" disabled required=""/>${description}</textarea></td>
             <td data-type='class_type' data-value='${class_type}'><input type='textarea' required="" value='${class_type}' disabled/></td>
             <td data-type='color' data-value='${color}'><input type='textarea' value='${color}' required="" disabled/></td>
 
@@ -122,7 +123,7 @@
         })
     }
 
-    $("form").submit(function(e){
+    $("#add_cat").submit(function(e){
         e.preventDefault();
         console.log(this)
 
@@ -175,7 +176,7 @@
         let buttons = tr.find('[data-type="buttons"]');
 
         name.find('input').prop("disabled", false);
-        description.find('input').prop("disabled", false);
+        description.find('textarea').prop("disabled", false);
         class_type.find('input').prop("disabled", false);
         color.find('input').prop("disabled", false);
         gender.find('select').prop("disabled", false);
@@ -197,7 +198,7 @@
         let buttons = tr.find('[data-type="buttons"]');
 
         name.find('input').prop("disabled", true);
-        description.find('input').prop("disabled", true);
+        description.find('textarea').prop("disabled", true);
         class_type.find('input').prop("disabled", true);
         color.find('input').prop("disabled", true);
         gender.find('select').prop("disabled", true);
@@ -216,7 +217,7 @@
         let buttons = tr.find('[data-type="buttons"]');
 
         name.find('input').val(name.data("value"));
-        description.find('input').val(description.data("value"));
+        description.find('textarea').val(description.data("value"));
         class_type.find('input').val(class_type.data("value"));
         color.find('input').val(color.data("value"));
         gender.find('select').val(gender.data("value")).change();
@@ -251,7 +252,7 @@
         new_data = {
             'id': id,
             'name': name.children("input").val(),
-            'description': description.children("input").val(),
+            'description': description.children("textarea").val(),
             'class_type': class_type.children("input").val(),
             'color': color.children("input").val(),
             'gender': gender.children("select").val(),
