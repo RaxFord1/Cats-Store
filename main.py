@@ -11,7 +11,10 @@ db = SQLAlchemy(app)
 
 app.config['db_images'] = './resources/cats'
 
+
 class Cat(db.Model):
+    """Take data from table and return it in easily serializable format
+    Id, Name and Description, Type, Gender and Availability, Image, Colour, Birthday and Date creation of Cat"""
     id = db.Column(db.Integer, primary_key=True)
 
     name = db.Column(db.String(), nullable=False)
@@ -30,7 +33,8 @@ class Cat(db.Model):
 
     @property
     def serialize(self):
-        """Return object data in easily serializable format"""
+        """Serialization of data
+        Return object data in easily serializable format"""
         return {
             'id': self.id,
             'name': self.name,
@@ -45,30 +49,38 @@ class Cat(db.Model):
     @property
     def serialize_many2many(self):
         """
+        Serialization of data 'many to many'
         Return object's relations in easily serializable format.
         NB! Calls many2many's serialize property.
         """
         return [item.serialize for item in self.many2many]
 
+
     def __repr__(self):
+        """Return string with Id of cat"""
         return '<Cat %r>' % self.id
 
 
 class Kitty(db.Model):
+    """Take data from table
+    Id, Mom and Dad, Date creation of Kitty"""
     # маленькое животное
     # id = db.Column(db.Integer, primary_key = True)
-
     cat_id = db.Column(db.Integer, db.ForeignKey('cat.id', ondelete="CASCADE"), primary_key=True)
     mom = db.Column(db.Integer, db.ForeignKey('cat.id', ondelete="CASCADE"))
     dad = db.Column(db.Integer, db.ForeignKey('cat.id', ondelete="CASCADE"))
 
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
+
     def __repr__(self):
+        """Return string with id of Kitty"""
         return '<Kitty %r>' % self.id
 
 
 class User(db.Model):
+    """Take data from table
+    Id, Name and Surname, Email and phone, Gender, Birthday, City, Date creation of User"""
     id = db.Column(db.Integer, primary_key=True)
 
     first_name = db.Column(db.String(50), nullable=False)
@@ -85,11 +97,14 @@ class User(db.Model):
 
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
+
     def __repr__(self):
+        """Return string with id of User"""
         return '<User %r>' % self.id
 
-
 class Booking(db.Model):
+    """Take data from table.
+    Id, Cat id, User id, Comment, Date creation of Booking"""
     # маленькое животное
     id = db.Column(db.Integer, primary_key=True)
 
@@ -99,12 +114,15 @@ class Booking(db.Model):
 
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
+
     def __repr__(self):
+        """Return string with id of Kitty"""
         return '<Kitty %r>' % self.id
 
 
 @app.route("/register", methods=['POST'])
 def register():
+    """Setting page and path"""
     if request.method == 'POST':
         first_name = request.form['first_name']
         last_name = request.form['last_name']
@@ -137,17 +155,20 @@ def register():
 
 @app.route("/login", methods=['POST', 'GET'])
 def login():
+    """Setting page and path"""
     return render_template('index.html', registered="asd")
 
 
 @app.route("/cats", methods=['GET'])
 def cats():
+    """Setting page and path"""
     cats = Cat.query.order_by(Cat.class_type).all()
     return render_template('cat.html', cats=cats)
 
 
 @app.route("/cats.json", methods=['GET'])
 def cats_json():
+    """Setting page and path"""
     cats = Cat.query.order_by(Cat.class_type).all()
     allpets = [cat.serialize for cat in cats]
     return jsonify(allpets)
@@ -155,12 +176,14 @@ def cats_json():
 
 @app.route("/cat/<int:id>", methods=['GET'])
 def cat(id):
+    """Setting page and path"""
     cat = Cat.query.filter_by(id=id).first()
     return jsonify(cat.serialize)
 
 
 @app.route("/admin/cat", methods=['POST'])
 def admin_cat_post():
+    """Setting page and path"""
     form = request.form
     name = form['name']
     description = form['description']
@@ -199,6 +222,7 @@ def admin_cat_post():
 
 @app.route("/admin/cat/<int:id>", methods=['GET', 'DELETE', 'UPDATE'])
 def admin_cat_change(id):
+    """Setting page and path"""
     if request.method == 'GET':
         cat = Cat.query.filter_by(id=id).first()
         return jsonify(cat.serialize)
@@ -250,6 +274,7 @@ def admin_cat_change(id):
 
 @app.route("/kitty", methods=['GET'])
 def kitty():
+    """Setting page and path"""
     kitties = Kitty.query.join(Cat, Cat.id == Kitty.cat_id).add_columns(
         Cat.name, Cat.gender, Cat.available, Cat.birthday,
         Cat.description, Cat.class_type, Cat.color
@@ -260,30 +285,36 @@ def kitty():
 
 @app.route("/index")
 def index():
+    """Setting page and path"""
     return render_template('index.html')
 
 
 @app.route("/")
 def landing():
+    """Setting page and path"""
     return render_template('landing.html')
 
 
 @app.route("/gallery")
 def gallery():
+    """Setting page and path"""
     return render_template('gallery.html')
 
 
 @app.route("/admin")
 def admin_cat():
+    """Setting page and path"""
     return render_template('admin_cat.html')
 
 
 def createdb():
+    """Create DB"""
     db.create_all()
     exit()
 
+
 def fillbd():
-    
+    """Filling DB"""
     # todo: добавить картинку
     cat1 = Cat(name="Кузя", description="Первый счастливчик в нашей маленькой воображаемой семье",
                class_type="A", gender=0, available=0, color="red",
@@ -329,6 +360,6 @@ def fillbd():
 
 
 if __name__ == "__main__":
-    # fillbd()
+    #fillbd()
 
     app.run(debug=True)
