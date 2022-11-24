@@ -1,6 +1,8 @@
+import os
 import uuid
 
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
+from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, date
 from sqlalchemy import select
@@ -11,6 +13,7 @@ db = SQLAlchemy(app)
 
 app.config['db_images'] = './resources/cats'
 
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 class Cat(db.Model):
     """Take data from table and return it in easily serializable format
@@ -271,6 +274,58 @@ def admin_cat_change(id):
         except Exception as e:
             return {"result": f'Couldnt insert {e}'}
 
+
+def allowed_file(filename):
+	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route("/upload_file", methods=['POST'])
+def upload_image():
+    if 'cat_id' not in request.form or request.form['cat_id'] == "":
+        return redirect("admin")
+    if 'file' not in request.files:
+        return redirect("admin")
+    file = request.files['file']
+    if file.filename == '':
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filename = str(uuid.uuid4())+filename
+        save_path = os.path.join(app.config['db_images'],request.form['cat_id'])
+        isExist = os.path.exists(save_path)
+        if not isExist:
+            os.makedirs(save_path)
+        file.save(os.path.join(save_path, filename))
+        #print('upload_image filename: ' + filename)
+    return redirect("admin")
+
+@app.route("/getImages/<int:id>", methods=['GET'])
+def get_images(id):
+    cat_folder = os.path.join(app.config['db_images'], str(id))
+
+    if not os.path.exists(cat_folder):
+        return jsonify({"result":"", "status":"Error"})
+
+    images = os.listdir(cat_folder)
+    return jsonify({"result":images, "status":"ok"})
+
+@app.route('/image/<int:cat_id>')
+def get_image_thumbnail(cat_id):
+    cat_path = app.config['db_images']+"/"+str(cat_id)
+    print(cat_path)
+    if os.path.exists(cat_path):
+        images = os.listdir(cat_path)
+        if len(images) == 0:
+            return send_from_directory('static', 'images/thumbnail.svg')
+        print(images)
+        return send_from_directory(cat_path, images[-1])
+
+    return send_from_directory('static', 'images/thumbnail.svg')
+    
+    
+
+@app.route('/image/<int:cat_id>/<path>')
+def get_image_direct(cat_id, path):
+    return send_from_directory(app.config['db_images']+"/"+str(cat_id), path)
 
 @app.route("/kitty", methods=['GET'])
 def kitty():

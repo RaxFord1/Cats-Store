@@ -1,3 +1,5 @@
 *.pyc
 test.db
 __pycache__
+resources/cats/
+__pycache__/
