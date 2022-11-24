@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>main module &mdash; web-adaptive 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> web-adaptive
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">main module</a><ul>
+<li><a class="reference internal" href="#main.Booking"><code class="docutils literal notranslate"><span class="pre">Booking</span></code></a><ul>
+<li><a class="reference internal" href="#main.Booking.cat_id"><code class="docutils literal notranslate"><span class="pre">Booking.cat_id</span></code></a></li>
+<li><a class="reference internal" href="#main.Booking.comment"><code class="docutils literal notranslate"><span class="pre">Booking.comment</span></code></a></li>
+<li><a class="reference internal" href="#main.Booking.date_created"><code class="docutils literal notranslate"><span class="pre">Booking.date_created</span></code></a></li>
+<li><a class="reference internal" href="#main.Booking.id"><code class="docutils literal notranslate"><span class="pre">Booking.id</span></code></a></li>
+<li><a class="reference internal" href="#main.Booking.query"><code class="docutils literal notranslate"><span class="pre">Booking.query</span></code></a></li>
+<li><a class="reference internal" href="#main.Booking.user_id"><code class="docutils literal notranslate"><span class="pre">Booking.user_id</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#main.Cat"><code class="docutils literal notranslate"><span class="pre">Cat</span></code></a><ul>
+<li><a class="reference internal" href="#main.Cat.available"><code class="docutils literal notranslate"><span class="pre">Cat.available</span></code></a></li>
+<li><a class="reference internal" href="#main.Cat.birthday"><code class="docutils literal notranslate"><span class="pre">Cat.birthday</span></code></a></li>
+<li><a class="reference internal" href="#main.Cat.class_type"><code class="docutils literal notranslate"><span class="pre">Cat.class_type</span></code></a></li>
+<li><a class="reference internal" href="#main.Cat.color"><code class="docutils literal notranslate"><span class="pre">Cat.color</span></code></a></li>
+<li><a class="reference internal" href="#main.Cat.date_created"><code class="docutils literal notranslate"><span class="pre">Cat.date_created</span></code></a></li>
+<li><a class="reference internal" href="#main.Cat.description"><code class="docutils literal notranslate"><span class="pre">Cat.description</span></code></a></li>
+<li><a class="reference internal" href="#main.Cat.gender"><code class="docutils literal notranslate"><span class="pre">Cat.gender</span></code></a></li>
+<li><a class="reference internal" href="#main.Cat.id"><code class="docutils literal notranslate"><span class="pre">Cat.id</span></code></a></li>
+<li><a class="reference internal" href="#main.Cat.image"><code class="docutils literal notranslate"><span class="pre">Cat.image</span></code></a></li>
+<li><a class="reference internal" href="#main.Cat.name"><code class="docutils literal notranslate"><span class="pre">Cat.name</span></code></a></li>
+<li><a class="reference internal" href="#main.Cat.query"><code class="docutils literal notranslate"><span class="pre">Cat.query</span></code></a></li>
+<li><a class="reference internal" href="#main.Cat.serialize"><code class="docutils literal notranslate"><span class="pre">Cat.serialize</span></code></a></li>
+<li><a class="reference internal" href="#main.Cat.serialize_many2many"><code class="docutils literal notranslate"><span class="pre">Cat.serialize_many2many</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#main.Kitty"><code class="docutils literal notranslate"><span class="pre">Kitty</span></code></a><ul>
+<li><a class="reference internal" href="#main.Kitty.cat_id"><code class="docutils literal notranslate"><span class="pre">Kitty.cat_id</span></code></a></li>
+<li><a class="reference internal" href="#main.Kitty.dad"><code class="docutils literal notranslate"><span class="pre">Kitty.dad</span></code></a></li>
+<li><a class="reference internal" href="#main.Kitty.date_created"><code class="docutils literal notranslate"><span class="pre">Kitty.date_created</span></code></a></li>
+<li><a class="reference internal" href="#main.Kitty.mom"><code class="docutils literal notranslate"><span class="pre">Kitty.mom</span></code></a></li>
+<li><a class="reference internal" href="#main.Kitty.query"><code class="docutils literal notranslate"><span class="pre">Kitty.query</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#main.User"><code class="docutils literal notranslate"><span class="pre">User</span></code></a><ul>
+<li><a class="reference internal" href="#main.User.birthday"><code class="docutils literal notranslate"><span class="pre">User.birthday</span></code></a></li>
+<li><a class="reference internal" href="#main.User.city"><code class="docutils literal notranslate"><span class="pre">User.city</span></code></a></li>
+<li><a class="reference internal" href="#main.User.date_created"><code class="docutils literal notranslate"><span class="pre">User.date_created</span></code></a></li>
+<li><a class="reference internal" href="#main.User.email"><code class="docutils literal notranslate"><span class="pre">User.email</span></code></a></li>
+<li><a class="reference internal" href="#main.User.first_name"><code class="docutils literal notranslate"><span class="pre">User.first_name</span></code></a></li>
+<li><a class="reference internal" href="#main.User.gender"><code class="docutils literal notranslate"><span class="pre">User.gender</span></code></a></li>
+<li><a class="reference internal" href="#main.User.id"><code class="docutils literal notranslate"><span class="pre">User.id</span></code></a></li>
+<li><a class="reference internal" href="#main.User.last_name"><code class="docutils literal notranslate"><span class="pre">User.last_name</span></code></a></li>
+<li><a class="reference internal" href="#main.User.phone_number"><code class="docutils literal notranslate"><span class="pre">User.phone_number</span></code></a></li>
+<li><a class="reference internal" href="#main.User.query"><code class="docutils literal notranslate"><span class="pre">User.query</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#main.admin_cat"><code class="docutils literal notranslate"><span class="pre">admin_cat()</span></code></a></li>
+<li><a class="reference internal" href="#main.admin_cat_change"><code class="docutils literal notranslate"><span class="pre">admin_cat_change()</span></code></a></li>
+<li><a class="reference internal" href="#main.admin_cat_post"><code class="docutils literal notranslate"><span class="pre">admin_cat_post()</span></code></a></li>
+<li><a class="reference internal" href="#main.cat"><code class="docutils literal notranslate"><span class="pre">cat()</span></code></a></li>
+<li><a class="reference internal" href="#main.cats"><code class="docutils literal notranslate"><span class="pre">cats()</span></code></a></li>
+<li><a class="reference internal" href="#main.cats_json"><code class="docutils literal notranslate"><span class="pre">cats_json()</span></code></a></li>
+<li><a class="reference internal" href="#main.createdb"><code class="docutils literal notranslate"><span class="pre">createdb()</span></code></a></li>
+<li><a class="reference internal" href="#main.fillbd"><code class="docutils literal notranslate"><span class="pre">fillbd()</span></code></a></li>
+<li><a class="reference internal" href="#main.gallery"><code class="docutils literal notranslate"><span class="pre">gallery()</span></code></a></li>
+<li><a class="reference internal" href="#main.index"><code class="docutils literal notranslate"><span class="pre">index()</span></code></a></li>
+<li><a class="reference internal" href="#main.kitty"><code class="docutils literal notranslate"><span class="pre">kitty()</span></code></a></li>
+<li><a class="reference internal" href="#main.landing"><code class="docutils literal notranslate"><span class="pre">landing()</span></code></a></li>
+<li><a class="reference internal" href="#main.login"><code class="docutils literal notranslate"><span class="pre">login()</span></code></a></li>
+<li><a class="reference internal" href="#main.register"><code class="docutils literal notranslate"><span class="pre">register()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">web-adaptive</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">main module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/main.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-main">
+<span id="main-module"></span><h1>main module<a class="headerlink" href="#module-main" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="main.Booking">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">Booking</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#Booking"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.Booking" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Take data from table
+Id, Cat id, User id, Comment, Date creation of Booking</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Booking.cat_id">
+<span class="sig-name descname"><span class="pre">cat_id</span></span><a class="headerlink" href="#main.Booking.cat_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Booking.comment">
+<span class="sig-name descname"><span class="pre">comment</span></span><a class="headerlink" href="#main.Booking.comment" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Booking.date_created">
+<span class="sig-name descname"><span class="pre">date_created</span></span><a class="headerlink" href="#main.Booking.date_created" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Booking.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#main.Booking.id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Booking.query">
+<span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Query</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#main.Booking.query" title="Permalink to this definition"></a></dt>
+<dd><p>A SQLAlchemy query for a model. Equivalent to <code class="docutils literal notranslate"><span class="pre">db.session.query(Model)</span></code>. Can be
+customized per-model by overriding <code class="xref py py-attr docutils literal notranslate"><span class="pre">query_class</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The query interface is considered legacy in SQLAlchemy. Prefer using
+<code class="docutils literal notranslate"><span class="pre">session.execute(select())</span></code> instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Booking.user_id">
+<span class="sig-name descname"><span class="pre">user_id</span></span><a class="headerlink" href="#main.Booking.user_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="main.Cat">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">Cat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#Cat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.Cat" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Take data from table and return it in easily serializable format
+Id, Name and Description, Type, Gender and Availability, Image, Colour, Birthday and Date creation of Cat</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Cat.available">
+<span class="sig-name descname"><span class="pre">available</span></span><a class="headerlink" href="#main.Cat.available" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Cat.birthday">
+<span class="sig-name descname"><span class="pre">birthday</span></span><a class="headerlink" href="#main.Cat.birthday" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Cat.class_type">
+<span class="sig-name descname"><span class="pre">class_type</span></span><a class="headerlink" href="#main.Cat.class_type" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Cat.color">
+<span class="sig-name descname"><span class="pre">color</span></span><a class="headerlink" href="#main.Cat.color" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Cat.date_created">
+<span class="sig-name descname"><span class="pre">date_created</span></span><a class="headerlink" href="#main.Cat.date_created" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Cat.description">
+<span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#main.Cat.description" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Cat.gender">
+<span class="sig-name descname"><span class="pre">gender</span></span><a class="headerlink" href="#main.Cat.gender" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Cat.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#main.Cat.id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Cat.image">
+<span class="sig-name descname"><span class="pre">image</span></span><a class="headerlink" href="#main.Cat.image" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Cat.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#main.Cat.name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Cat.query">
+<span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Query</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#main.Cat.query" title="Permalink to this definition"></a></dt>
+<dd><p>A SQLAlchemy query for a model. Equivalent to <code class="docutils literal notranslate"><span class="pre">db.session.query(Model)</span></code>. Can be
+customized per-model by overriding <code class="xref py py-attr docutils literal notranslate"><span class="pre">query_class</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The query interface is considered legacy in SQLAlchemy. Prefer using
+<code class="docutils literal notranslate"><span class="pre">session.execute(select())</span></code> instead.</p>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="main.Cat.serialize">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">serialize</span></span><a class="headerlink" href="#main.Cat.serialize" title="Permalink to this definition"></a></dt>
+<dd><p>Serialization of data
+Return object data in easily serializable format</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="main.Cat.serialize_many2many">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">serialize_many2many</span></span><a class="headerlink" href="#main.Cat.serialize_many2many" title="Permalink to this definition"></a></dt>
+<dd><p>Serialization of data ‘many to many’
+Return object’s relations in easily serializable format.
+NB! Calls many2many’s serialize property.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="main.Kitty">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">Kitty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#Kitty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.Kitty" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Take data from table
+Id, Mom and Dad, Date creation of Kitty</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Kitty.cat_id">
+<span class="sig-name descname"><span class="pre">cat_id</span></span><a class="headerlink" href="#main.Kitty.cat_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Kitty.dad">
+<span class="sig-name descname"><span class="pre">dad</span></span><a class="headerlink" href="#main.Kitty.dad" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Kitty.date_created">
+<span class="sig-name descname"><span class="pre">date_created</span></span><a class="headerlink" href="#main.Kitty.date_created" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Kitty.mom">
+<span class="sig-name descname"><span class="pre">mom</span></span><a class="headerlink" href="#main.Kitty.mom" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.Kitty.query">
+<span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Query</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#main.Kitty.query" title="Permalink to this definition"></a></dt>
+<dd><p>A SQLAlchemy query for a model. Equivalent to <code class="docutils literal notranslate"><span class="pre">db.session.query(Model)</span></code>. Can be
+customized per-model by overriding <code class="xref py py-attr docutils literal notranslate"><span class="pre">query_class</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The query interface is considered legacy in SQLAlchemy. Prefer using
+<code class="docutils literal notranslate"><span class="pre">session.execute(select())</span></code> instead.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="main.User">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#User"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.User" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Take data from table
+Id, Name and Surname, Email and phone, Gender, Birthday, City, Date creation of User</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.User.birthday">
+<span class="sig-name descname"><span class="pre">birthday</span></span><a class="headerlink" href="#main.User.birthday" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.User.city">
+<span class="sig-name descname"><span class="pre">city</span></span><a class="headerlink" href="#main.User.city" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.User.date_created">
+<span class="sig-name descname"><span class="pre">date_created</span></span><a class="headerlink" href="#main.User.date_created" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.User.email">
+<span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#main.User.email" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.User.first_name">
+<span class="sig-name descname"><span class="pre">first_name</span></span><a class="headerlink" href="#main.User.first_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.User.gender">
+<span class="sig-name descname"><span class="pre">gender</span></span><a class="headerlink" href="#main.User.gender" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.User.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#main.User.id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.User.last_name">
+<span class="sig-name descname"><span class="pre">last_name</span></span><a class="headerlink" href="#main.User.last_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.User.phone_number">
+<span class="sig-name descname"><span class="pre">phone_number</span></span><a class="headerlink" href="#main.User.phone_number" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="main.User.query">
+<span class="sig-name descname"><span class="pre">query</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">t.ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Query</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#main.User.query" title="Permalink to this definition"></a></dt>
+<dd><p>A SQLAlchemy query for a model. Equivalent to <code class="docutils literal notranslate"><span class="pre">db.session.query(Model)</span></code>. Can be
+customized per-model by overriding <code class="xref py py-attr docutils literal notranslate"><span class="pre">query_class</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The query interface is considered legacy in SQLAlchemy. Prefer using
+<code class="docutils literal notranslate"><span class="pre">session.execute(select())</span></code> instead.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.admin_cat">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">admin_cat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#admin_cat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.admin_cat" title="Permalink to this definition"></a></dt>
+<dd><p>Setting page and path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.admin_cat_change">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">admin_cat_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#admin_cat_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.admin_cat_change" title="Permalink to this definition"></a></dt>
+<dd><p>Setting page and path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.admin_cat_post">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">admin_cat_post</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#admin_cat_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.admin_cat_post" title="Permalink to this definition"></a></dt>
+<dd><p>Setting page and path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.cat">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">cat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#cat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.cat" title="Permalink to this definition"></a></dt>
+<dd><p>Setting page and path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.cats">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">cats</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#cats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.cats" title="Permalink to this definition"></a></dt>
+<dd><p>Setting page and path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.cats_json">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">cats_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#cats_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.cats_json" title="Permalink to this definition"></a></dt>
+<dd><p>Setting page and path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.createdb">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">createdb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#createdb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.createdb" title="Permalink to this definition"></a></dt>
+<dd><p>Create DB</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.fillbd">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">fillbd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#fillbd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.fillbd" title="Permalink to this definition"></a></dt>
+<dd><p>Filling DB</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.gallery">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">gallery</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#gallery"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.gallery" title="Permalink to this definition"></a></dt>
+<dd><p>Setting page and path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.index">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.index" title="Permalink to this definition"></a></dt>
+<dd><p>Setting page and path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.kitty">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">kitty</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#kitty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.kitty" title="Permalink to this definition"></a></dt>
+<dd><p>Setting page and path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.landing">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">landing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#landing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.landing" title="Permalink to this definition"></a></dt>
+<dd><p>Setting page and path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.login">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#login"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.login" title="Permalink to this definition"></a></dt>
+<dd><p>Setting page and path</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.register">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#register"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.register" title="Permalink to this definition"></a></dt>
+<dd><p>Setting page and path</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Kus-Kus.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
