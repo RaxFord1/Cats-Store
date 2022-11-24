@@ -378,7 +378,6 @@ def upload_image():
         if not isExist:
             os.makedirs(save_path)
         file.save(os.path.join(save_path, filename))
-        #print('upload_image filename: ' + filename)
     return redirect("admin")
 
 @app.route("/getImages/<int:id>", methods=['GET'])
@@ -403,8 +402,6 @@ def get_image_thumbnail(cat_id):
         return send_from_directory(cat_path, images[-1])
 
     return send_from_directory('static', 'images/thumbnail.svg')
-    
-    
 
 @app.route('/image/<int:cat_id>/<path>')
 def get_image_direct(cat_id, path):
