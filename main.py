@@ -1,6 +1,7 @@
 import uuid
+import jwt
 
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, date
 from sqlalchemy import select
@@ -10,6 +11,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
 
 app.config['db_images'] = './resources/cats'
+app.config['secret_key'] = "QsdaWQEaKDJHASDYasdpo1238ASJDGHa123"
 
 class Cat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -83,6 +85,10 @@ class User(db.Model):
 
     city = db.Column(db.String(50), nullable=False)
 
+    password = db.Column(db.String(50), nullable=False)
+
+    admin = db.Column(db.Boolean, default=False, nullable=False)
+
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
@@ -102,48 +108,124 @@ class Booking(db.Model):
     def __repr__(self):
         return '<Kitty %r>' % self.id
 
+class Tokens(db.Model):
+    token = db.Column(db.String(500), nullable=False, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"))
+
+    def __repr__(self):
+        return '<Tokens %r>' % self.id
+
 
 @app.route("/register", methods=['POST'])
 def register():
-    if request.method == 'POST':
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        email = request.form['email']
-        phone_number = request.form['phone_number']
-        gender = request.form['gender']  # TODO: сделать проверку, что 0 или 1
-        if gender == 'male':
-            gender = 0
-        else:
-            gender = 1
-        birthday = datetime.strptime(request.form['birthday'], "%Y-%m-%d")
-        city = request.form['city']
+    resp = make_response(redirect('index'))
+    if not "first_name" in request.form:
+        return resp
+    if not "last_name" in request.form:
+        return resp
+    if not "email" in request.form:
+        return resp
+    if not "phone_number" in request.form:
+        return resp
+    if not "city" in request.form:
+        return resp
+    if not "password" in request.form:
+        return resp
+    
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    email = request.form['email']
+    phone_number = request.form['phone_number']
+    gender = request.form['gender']  # TODO: сделать проверку, что 0 или 1
+    if gender == 'male':
+        gender = 0
+    else:
+        gender = 1
+    birthday = datetime.strptime(request.form['birthday'], "%Y-%m-%d")
+    city = request.form['city']
+    city = request.form['password']
 
-        user = User(first_name=first_name, last_name=last_name, email=email,
-                    phone_number=phone_number, gender=gender, birthday=birthday, city=city
-                    )
+    user = User(first_name=first_name, last_name=last_name, email=email,
+                phone_number=phone_number, gender=gender, birthday=birthday, city=city
+                )
 
-        print(user)
-        print(first_name, last_name, email, phone_number, gender, birthday, city)
-        try:
-            # TODO: навешать логики, если юзер уже создан
-            db.session.add(user)
-            db.session.commit()
-            return redirect('/')
-        except Exception as e:
-            return f'Couldnt insert {e}'
+    print(user)
+    print(first_name, last_name, email, phone_number, gender, birthday, city)
+    try:
+        # TODO: навешать логики, если юзер уже создан
+        db.session.add(user)
+        db.session.commit()
+    except Exception as e:
+        return resp
+    
+    encoded_jwt = jwt.encode(
+        {
+            "first_name": user.first_name, 
+            "last_name": user.last_name,
+            "email": user.email,
+            "phone_number": user.phone_number,
+        }, 
+        app.config['secret_key'],
+        algorithm="HS256"
+    )
+    token = Tokens.query.filter_by(token=encoded_jwt).one()
+    resp.set_cookie('jwt', token.token)
 
-    return render_template('index.html')
+    return resp
 
 
-@app.route("/login", methods=['POST', 'GET'])
+@app.route("/login", methods=['POST'])
 def login():
-    return render_template('index.html', registered="asd")
+    resp = make_response(redirect('index'))
+    if not "email" in request.form:
+        return resp
+    if not "password" in request.form:
+        return resp
+    name = request.form['email']
+    password = request.form['password']
+    try:
+        user =  User.query.filter_by(email=name, password=password).one()
+        encoded_jwt = jwt.encode(
+            {
+                "first_name": user.first_name, 
+                "last_name": user.last_name,
+                "email": user.email,
+                "phone_number": user.phone_number,
+            }, 
+            app.config['secret_key'],
+            algorithm="HS256"
+        )
+        try:
+            token = Tokens.query.filter_by(token=encoded_jwt).one()
+            resp.set_cookie('jwt', token.token)
+        except Exception as e:
+            token = Tokens(token=encoded_jwt, user_id=user.id)
+            try:
+                db.session.add(token)
+                db.session.commit()
+                resp.set_cookie('jwt', token.token)
+            except Exception as e:
+                print(f'Couldnt insert {e}')
+        
+        # jwt.decode(encoded_jwt, "secret", algorithms=["HS256"])
+    except Exception as e:
+        print(f'Couldnt insert {e}')
+    
+    return resp
+
+
+@app.route("/exit", methods=['GET'])
+def exit():
+    res = make_response(redirect('index'))
+    cookie_val = request.cookies.get("jwt")
+    res.set_cookie('jwt', cookie_val, expires=0)
+    return res
 
 
 @app.route("/cats", methods=['GET'])
 def cats():
     cats = Cat.query.order_by(Cat.class_type).all()
-    return render_template('cat.html', cats=cats)
+    return render_template('cat.html', cats=cats, title="Наши коты", jwt=request.cookies.get("jwt"))
 
 
 @app.route("/cats.json", methods=['GET'])
@@ -250,27 +332,49 @@ def admin_cat_change(id):
 
 @app.route("/kitty", methods=['GET'])
 def kitty():
+    
+    name = request.cookies.get('userID')
     kitties = Kitty.query.join(Cat, Cat.id == Kitty.cat_id).add_columns(
         Cat.name, Cat.gender, Cat.available, Cat.birthday,
         Cat.description, Cat.class_type, Cat.color
     ).all()
 
-    return render_template('cat.html', cats=kitties)
+    return render_template('cat.html', cats=kitties, title="Наши детки", jwt=request.cookies.get("jwt"))
+
+
+@app.route("/boys", methods=['GET'])
+def boys():
+    kitties = Kitty.query.join(Cat, Cat.id == Kitty.cat_id).add_columns(
+        Cat.name, Cat.gender, Cat.available, Cat.birthday,
+        Cat.description, Cat.class_type, Cat.color
+    ).filter_by(gender=False).all()
+
+    return render_template('cat.html', cats=kitties, title="Наши мальчики", jwt=request.cookies.get("jwt"))
+
+
+@app.route("/girls", methods=['GET'])
+def girls():
+    kitties = Kitty.query.join(Cat, Cat.id == Kitty.cat_id).add_columns(
+        Cat.name, Cat.gender, Cat.available, Cat.birthday,
+        Cat.description, Cat.class_type, Cat.color
+    ).filter_by(gender=True).all()
+
+    return render_template('cat.html', cats=kitties, title="Наши девочки", jwt=request.cookies.get("jwt"))
 
 
 @app.route("/index")
 def index():
-    return render_template('index.html')
+    return render_template('index.html', jwt=request.cookies.get("jwt"))
 
 
 @app.route("/")
 def landing():
-    return render_template('landing.html')
+    return render_template('landing.html', jwt=request.cookies.get("jwt"))
 
 
 @app.route("/gallery")
 def gallery():
-    return render_template('gallery.html')
+    return render_template('gallery.html', jwt=request.cookies.get("jwt"))
 
 
 @app.route("/admin")
@@ -281,6 +385,7 @@ def admin_cat():
 def createdb():
     db.create_all()
     exit()
+
 
 def fillbd():
     
@@ -311,7 +416,8 @@ def fillbd():
     cat_has_parents2 = Kitty(cat_id=4, mom=2, dad=1)
 
     user = User(first_name="Dima", last_name="Dzundza", email="dzun@gm",
-                phone_number="+38073354236", gender=0, birthday=date(2002, 2, 17), city="Mykolaiv")
+                phone_number="+38073354236", gender=0, birthday=date(2002, 2, 17), city="Mykolaiv", 
+                password="123123123")
 
     try:
         db.session.add(cat1)
