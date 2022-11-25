@@ -12,33 +12,36 @@
 	<br>
 	<div class="cats-conteiner" align="center">
 	{% for cat in cats %}
-		<div class="col-md-6" >
+		<div class="col-md-6 cat-ticket" >
 			<div class="card flex-md-row mb-4 box-shadow h-md-250">
 			<div class="card-body d-flex flex-column align-items-start">
+				<span hidden class='id_hidden'>{{ cat.id }}</span>
 				<div class="row" align="center">
 					<div class="col">
 						<strong class="d-inline-block mb-2 text-primary" >
-							{% if cat.gender == 1 %} 
-								Девочка
-							{% else %}
-								Мальчик
-							{% endif %}
+							<span class="gender">
+								{% if cat.gender == 1 %} 
+									Девочка
+								{% else %}
+									Мальчик
+								{% endif %}
+							</span>
 						</strong>
 					</div>
 					<div class="col">
-						Помёт: {{cat.class_type}}
+						Помёт: <span class="class_type">{{cat.class_type}}</span>
 					</div>
 				</div>
 					
 				<h3 class="mb-0">
-				<a class="text-dark" href="#">{{cat.name}}</a>
+				<a class="text-dark" href="#"><span class="name">{{cat.name}}</span></a>
 				</h3>
-				<div class="mb-1 text-muted">{{cat.birthday.strftime('%Y-%m-%d')}}</div>
-				<p class="card-text mb-auto">{{cat.description}}</p>
+				<div class="mb-1 text-muted"><span class="bday">{{cat.birthday.strftime('%Y-%m-%d')}}</span></div>
+				<p class="card-text mb-auto"><span class="description">{{cat.description}}</span></p>
 
-				<p class="card-text mb-auto">{{cat.color}}</p>
-                {% if cat.available == "1" %}
-                    <a href="#">Continue reading</a>
+				<p class="card-text mb-auto"><span class="color">{{cat.color}}</span></p>
+                {% if cat.available == 1 %}
+                    <button class="btn-update reservation">Замовити</a>
                 {% endif %}
 				
 			</div>
@@ -48,5 +51,75 @@
 	{% endfor %}
 	</div>
 </div>
+
+{% if jwt is not none %}
+	<div class="form-close-bg"></div>
+	<div class="form-select-cat-container">
+		<div class="exit-icon"><a>x</a></div>
+		<div class="title">
+			<h2><span class="name"></span></h2>
+		</div>
+		{% include 'templates/carousel.html' %}
+		<h4>Имя: <span class="name"></span></h4>
+		<p>Пол: <span class="gender"></span></p>
+		<p>Помёт: <span class="class_type"></span></p>
+		<p>День рождения: <span class="bday"></span></p>
+		<p>Цвет: <span class="color"></span></p>
+		<p>Описание: <span class="description"></span></p>
+
+		<form method="POST" action="/make_booking">
+			<div class="form-input">
+				<label for="message">Ваш коментарий:</label>
+				<input id="message" type="text" name="message">
+				<button class='btn btn-info btn-xs btn-submit'>Подтвердить</button>
+			</div>
+			<input type="hidden" id="cat_id" name="cat_id" value="" />
+		</form>
+		<div class="form-button">
+			<button class='btn btn-danger btn-xs btn-exit'>Exit</button>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(".form-select-cat-container").hide()
+		$(".reservation").on( "click", function( event ) {
+			parent = $(this).parents(".cat-ticket")
+			id = parent.find(".id_hidden").html()
+			gender = parent.find(".gender").html()
+			name = parent.find(".name").html()
+			bday = parent.find(".bday").html()
+			description = parent.find(".description").html()
+			color = parent.find(".color").html()
+			class_type = parent.find(".class_type").html()
+	
+			// TODO: GET LIST OF IMAGES
+			console.log(parent)
+			console.log(name)
+	
+			form = $(".form-select-cat-container")
+			form.show()
+			form.find(".name").html(name)
+			form.find(".gender").html(gender)
+			form.find(".class_type").html(class_type)
+			form.find(".bday").html(bday)
+			form.find(".color").html(color)
+			form.find(".description").html(description)
+			form.find("#cat_id").val(id)
+	
+			console.log(form)
+			$(".form-close-bg").show();
+		});
+		
+	</script>
+{% else %}
+	<script type="text/javascript">
+		$(".reservation").on( "click", function( event ) {
+			alert("Зарегистрируйтесь и войдите в аккаунт!")
+		});
+	</script>
+{% endif %}
+
+
+
 
 {% endblock %}

@@ -1,7 +1,8 @@
 import os
 import uuid
+import jwt
 
-from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
+from flask import Flask, render_template, request, redirect, jsonify, make_response, send_from_directory
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, date
@@ -12,6 +13,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
 
 app.config['db_images'] = './resources/cats'
+app.config['secret_key'] = "QsdaWQEaKDJHASDYasdpo1238ASJDGHa123"
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
@@ -98,6 +100,10 @@ class User(db.Model):
 
     city = db.Column(db.String(50), nullable=False)
 
+    password = db.Column(db.String(50), nullable=False)
+
+    admin = db.Column(db.Boolean, default=False, nullable=False)
+
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
 
@@ -122,51 +128,128 @@ class Booking(db.Model):
         """Return string with id of Kitty"""
         return '<Kitty %r>' % self.id
 
+class Tokens(db.Model):
+    token = db.Column(db.String(500), nullable=False, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete="CASCADE"))
+
+    def __repr__(self):
+        return '<Tokens %r>' % self.id
+
 
 @app.route("/register", methods=['POST'])
 def register():
     """Setting page and path"""
-    if request.method == 'POST':
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        email = request.form['email']
-        phone_number = request.form['phone_number']
-        gender = request.form['gender']  # TODO: сделать проверку, что 0 или 1
-        if gender == 'male':
-            gender = 0
-        else:
-            gender = 1
-        birthday = datetime.strptime(request.form['birthday'], "%Y-%m-%d")
-        city = request.form['city']
+    resp = make_response(redirect('index'))
+    if not "first_name" in request.form:
+        return resp
+    if not "last_name" in request.form:
+        return resp
+    if not "email" in request.form:
+        return resp
+    if not "phone_number" in request.form:
+        return resp
+    if not "city" in request.form:
+        return resp
+    if not "password" in request.form:
+        return resp
+    
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    email = request.form['email']
+    phone_number = request.form['phone_number']
+    gender = request.form['gender']  # TODO: сделать проверку, что 0 или 1
+    if gender == 'male':
+        gender = 0
+    else:
+        gender = 1
+    birthday = datetime.strptime(request.form['birthday'], "%Y-%m-%d")
+    city = request.form['city']
+    password = request.form['password']
 
-        user = User(first_name=first_name, last_name=last_name, email=email,
-                    phone_number=phone_number, gender=gender, birthday=birthday, city=city
-                    )
+    user = User(first_name=first_name, last_name=last_name, email=email,
+                phone_number=phone_number, gender=gender, birthday=birthday, city=city, 
+                password=password
+            )
 
-        print(user)
-        print(first_name, last_name, email, phone_number, gender, birthday, city)
-        try:
-            # TODO: навешать логики, если юзер уже создан
-            db.session.add(user)
-            db.session.commit()
-            return redirect('/')
-        except Exception as e:
-            return f'Couldnt insert {e}'
+    print(user)
+    print(first_name, last_name, email, phone_number, gender, birthday, city)
+    try:
+        # TODO: навешать логики, если юзер уже создан
+        db.session.add(user)
+        db.session.commit()
+    except Exception as e:
+        return resp
+    
+    encoded_jwt = jwt.encode(
+        {
+            "first_name": user.first_name, 
+            "last_name": user.last_name,
+            "email": user.email,
+            "phone_number": user.phone_number,
+        }, 
+        app.config['secret_key'],
+        algorithm="HS256"
+    )
+    token = Tokens.query.filter_by(token=encoded_jwt).one()
+    resp.set_cookie('jwt', token.token)
 
-    return render_template('index.html')
+    return resp
 
 
-@app.route("/login", methods=['POST', 'GET'])
+@app.route("/login", methods=['POST'])
 def login():
     """Setting page and path"""
-    return render_template('index.html', registered="asd")
+    resp = make_response(redirect('index'))
+    if not "email" in request.form:
+        return resp
+    if not "password" in request.form:
+        return resp
+    name = request.form['email']
+    password = request.form['password']
+    try:
+        user =  User.query.filter_by(email=name, password=password).one()
+        encoded_jwt = jwt.encode(
+            {
+                "first_name": user.first_name, 
+                "last_name": user.last_name,
+                "email": user.email,
+                "phone_number": user.phone_number,
+            }, 
+            app.config['secret_key'],
+            algorithm="HS256"
+        )
+        try:
+            token = Tokens.query.filter_by(token=encoded_jwt).one()
+            resp.set_cookie('jwt', token.token)
+        except Exception as e:
+            token = Tokens(token=encoded_jwt, user_id=user.id)
+            try:
+                db.session.add(token)
+                db.session.commit()
+                resp.set_cookie('jwt', token.token)
+            except Exception as e:
+                print(f'Couldnt insert {e}')
+        
+        # jwt.decode(encoded_jwt, "secret", algorithms=["HS256"])
+    except Exception as e:
+        print(f'Couldnt insert {e}')
+    
+    return resp
+
+
+@app.route("/exit", methods=['GET'])
+def exit():
+    res = make_response(redirect('index'))
+    cookie_val = request.cookies.get("jwt")
+    res.set_cookie('jwt', cookie_val, expires=0)
+    return res
 
 
 @app.route("/cats", methods=['GET'])
 def cats():
     """Setting page and path"""
     cats = Cat.query.order_by(Cat.class_type).all()
-    return render_template('cat.html', cats=cats)
+    return render_template('cat.html', cats=cats, title="Наши коты", jwt=request.cookies.get("jwt"))
 
 
 @app.route("/cats.json", methods=['GET'])
@@ -219,6 +302,26 @@ def admin_cat_post():
         db.session.add(cat)
         db.session.commit()
         return {"result": "Ok", "id": cat.id}
+    except Exception as e:
+        return {"result": f'Couldnt insert {e}'}
+
+
+@app.route("/make_booking", methods=['POST'])
+def make_booking():
+    """Api handler for booking"""
+    
+    form = request.form
+    cat_id = form['cat_id']
+    message = form['message']
+    token = request.cookies.get("jwt")
+    try:
+        token_in_bd = Tokens.query.filter_by(token=token).one()
+        user = User.query.filter_by(id=token_in_bd.user_id).one()
+        booking = Booking(cat_id=cat_id, user_id = user.id, comment=message)
+        db.session.add(booking)
+        db.session.commit()
+        return {"result": "Ok", "id": booking.id}
+    
     except Exception as e:
         return {"result": f'Couldnt insert {e}'}
 
@@ -295,7 +398,6 @@ def upload_image():
         if not isExist:
             os.makedirs(save_path)
         file.save(os.path.join(save_path, filename))
-        #print('upload_image filename: ' + filename)
     return redirect("admin")
 
 @app.route("/getImages/<int:id>", methods=['GET'])
@@ -320,8 +422,6 @@ def get_image_thumbnail(cat_id):
         return send_from_directory(cat_path, images[-1])
 
     return send_from_directory('static', 'images/thumbnail.svg')
-    
-    
 
 @app.route('/image/<int:cat_id>/<path>')
 def get_image_direct(cat_id, path):
@@ -330,30 +430,51 @@ def get_image_direct(cat_id, path):
 @app.route("/kitty", methods=['GET'])
 def kitty():
     """Setting page and path"""
+    name = request.cookies.get('userID')
     kitties = Kitty.query.join(Cat, Cat.id == Kitty.cat_id).add_columns(
         Cat.name, Cat.gender, Cat.available, Cat.birthday,
         Cat.description, Cat.class_type, Cat.color
     ).all()
 
-    return render_template('cat.html', cats=kitties)
+    return render_template('cat.html', cats=kitties, title="Наши детки", jwt=request.cookies.get("jwt"))
+
+
+@app.route("/boys", methods=['GET'])
+def boys():
+    kitties = Kitty.query.join(Cat, Cat.id == Kitty.cat_id).add_columns(
+        Cat.name, Cat.gender, Cat.available, Cat.birthday,
+        Cat.description, Cat.class_type, Cat.color
+    ).filter_by(gender=False).all()
+
+    return render_template('cat.html', cats=kitties, title="Наши мальчики", jwt=request.cookies.get("jwt"))
+
+
+@app.route("/girls", methods=['GET'])
+def girls():
+    kitties = Kitty.query.join(Cat, Cat.id == Kitty.cat_id).add_columns(
+        Cat.name, Cat.gender, Cat.available, Cat.birthday,
+        Cat.description, Cat.class_type, Cat.color
+    ).filter_by(gender=True).all()
+
+    return render_template('cat.html', cats=kitties, title="Наши девочки", jwt=request.cookies.get("jwt"))
 
 
 @app.route("/index")
 def index():
     """Setting page and path"""
-    return render_template('index.html')
+    return render_template('index.html', jwt=request.cookies.get("jwt"))
 
 
 @app.route("/")
 def landing():
     """Setting page and path"""
-    return render_template('landing.html')
+    return render_template('landing.html', jwt=request.cookies.get("jwt"))
 
 
 @app.route("/gallery")
 def gallery():
     """Setting page and path"""
-    return render_template('gallery.html')
+    return render_template('gallery.html', jwt=request.cookies.get("jwt"))
 
 
 @app.route("/admin")
@@ -397,7 +518,8 @@ def fillbd():
     cat_has_parents2 = Kitty(cat_id=4, mom=2, dad=1)
 
     user = User(first_name="Dima", last_name="Dzundza", email="dzun@gm",
-                phone_number="+38073354236", gender=0, birthday=date(2002, 2, 17), city="Mykolaiv")
+                phone_number="+38073354236", gender=0, birthday=date(2002, 2, 17), city="Mykolaiv", 
+                password="123123123")
 
     try:
         db.session.add(cat1)
@@ -413,8 +535,8 @@ def fillbd():
         print(f'Couldnt insert {e}')
     exit()
 
-
 if __name__ == "__main__":
+    #db.create_all()
     #fillbd()
 
     app.run(debug=True)

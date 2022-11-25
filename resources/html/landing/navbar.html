@@ -42,10 +42,16 @@
             </ul>
             
         </div>
-        <form class="container-fluid d-none d-lg-block">
-            <button class="btn btn-sm btn-outline-light " id="navbar_login_button" type="button">Войти</button>
-            <button class="btn btn-sm btn-outline-light " id="navbar_register_button" type="button">Регистрация</button>
+        {% if jwt is not none %}
+        <form class="container-fluid d-none d-lg-block" action="/exit" method="GET">
+            <button class="btn btn-sm btn-outline-light " id="navbar_exit_button" type="submit">Выйти</button>
         </form>
+        {% else %}
+            <form class="container-fluid d-none d-lg-block">
+                <button class="btn btn-sm btn-outline-light " id="navbar_login_button" type="button">Войти</button>
+                <button class="btn btn-sm btn-outline-light " id="navbar_register_button" type="button">Регистрация</button>
+            </form>
+        {% endif %}
         </div>
         
     </nav>
