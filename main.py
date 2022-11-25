@@ -306,6 +306,26 @@ def admin_cat_post():
         return {"result": f'Couldnt insert {e}'}
 
 
+@app.route("/make_booking", methods=['POST'])
+def make_booking():
+    """Api handler for booking"""
+    
+    form = request.form
+    cat_id = form['cat_id']
+    message = form['message']
+    token = request.cookies.get("jwt")
+    try:
+        token_in_bd = Tokens.query.filter_by(token=token).one()
+        user = User.query.filter_by(id=token_in_bd.user_id).one()
+        booking = Booking(cat_id=cat_id, user_id = user.id, comment=message)
+        db.session.add(booking)
+        db.session.commit()
+        return {"result": "Ok", "id": booking.id}
+    
+    except Exception as e:
+        return {"result": f'Couldnt insert {e}'}
+
+
 @app.route("/admin/cat/<int:id>", methods=['GET', 'DELETE', 'UPDATE'])
 def admin_cat_change(id):
     """Setting page and path"""
@@ -516,6 +536,7 @@ def fillbd():
     exit()
 
 if __name__ == "__main__":
+    #db.create_all()
     #fillbd()
 
     app.run(debug=True)

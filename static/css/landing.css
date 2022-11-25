@@ -354,6 +354,18 @@ nav .navbar ul li a {
   background: rgba(229, 229, 229, 1);
 }
 
+.form-select-cat-container {
+    position: absolute;
+    width: 70%;
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 17%;
+    top: 17%;
+    background: #fff;
+}
+
 .text_1 {
   margin-top: 15px;
 }
