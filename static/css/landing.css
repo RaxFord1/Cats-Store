@@ -374,3 +374,13 @@ nav .navbar ul li a {
 .text_4 {
   margin-top: 30px;
 }
+.sub_title{
+font-weight:bold;
+font-style: italic;
+}
+.care-conteiner img{
+display: block;
+margin-left: auto;
+margin-right: auto;
+margin-bottom: 1%;
+}

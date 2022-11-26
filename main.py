@@ -464,6 +464,11 @@ def index():
     """Setting page and path"""
     return render_template('index.html', jwt=request.cookies.get("jwt"))
 
+@app.route("/care")
+def care():
+    """Setting page and path"""
+    return render_template('care.html', jwt=request.cookies.get("jwt"))
+
 
 @app.route("/")
 def landing():
