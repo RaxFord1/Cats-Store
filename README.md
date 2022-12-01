@@ -14,6 +14,8 @@ Installation steps
 
 6) conda install pytest
 
+7) conda install pyjwt
+
 
 Init project and db
 
