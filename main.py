@@ -538,10 +538,13 @@ def fillbd():
         
     except Exception as e:
         print(f'Couldnt insert {e}')
-    exit()
+
+
+@app.route("/init")
+def init():
+    #db.create_all()
+    fillbd()
+    return render_template('admin_cat.html')
 
 if __name__ == "__main__":
-    #db.create_all()
-    #fillbd()
-
     app.run(debug=True)
