@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+}
+body {
+    font-family: 'Public Sans', sans-serif;
+}
+.nav-bg, .footer, .header, .down-content-bg{
+    background: #80b1f5;
+}
+.nav-container {
+    max-width: 1024px;
+    margin: 0 auto;
+}
+.gallery-title
+{
+    font-size: 36px;
+    color: #80b1f5;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 70px;
+}
+.gallery-title:after {
+    content: "";
+    position: absolute;
+    width: 7.5%;
+    left: 46.5%;
+    height: 45px;
+    border-bottom: 1px solid #80b1f5;
+}
+.filter-button
+{
+    font-size: 18px;
+    border: 1px solid #80b1f5;
+    border-radius: 5px;
+    text-align: center;
+    color: #80b1f5;
+    margin-bottom: 30px;
+
+}
+.filter-button:hover
+{
+    font-size: 18px;
+    border: 1px solid #80b1f5;
+    border-radius: 5px;
+    text-align: center;
+    color: #ffffff;
+    background-color: #80b1f5;
+
+}
+.btn-default:active .filter-button:active
+{
+    background-color: #42B32F;
+    color: white;
+}
+
+.port-image
+{
+    width: 100%;
+}
+
+.gallery_product
+{
+    margin-bottom: 3.5%;
+}
+.fz-2{
+    font-size:1.5em;
+}
+.test{
+    background-image: url(https://i.imgur.com/Su8ZiiR.jpg)
+}

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" integrity="sha512-ZKX+BvQihRJPA8CROKBhDNvoc2aDMOdAlcm7TUQY+35XYtrd3yh95QOOhsPDQY9QnKE0Wqag9y38OIgEvb88cA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="gallery-styles.css">
+
+    <title>Кусь</title>
+</head>
+<body>
+
+        <section class="header">
+            <div class="nav-container">
+              
+              
+              <nav class="navbar navbar-expand-lg navbar-dark nav-bg">
+                <div class="container-fluid lead">
+                  <a class="navbar-brand" href="#">Кусь</a>
+                  
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  
+                  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Главная</a>
+                      </li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Питомцы
+                        </a>
+                        <ul class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
+                          <li><a class="dropdown-item " href="#">Action</a></li>
+                          <li><a class="dropdown-item "  href="#">Another action</a></li>
+                          <li><a class="dropdown-item " href="#">Something else here</a></li>
+                        </ul>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">Покупателям</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">Галерея</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">Статьи</a>
+                      </li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Локализация
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                          <li><a class="dropdown-item" href="#">Action</a></li>
+                          <li><a class="dropdown-item" href="#">Another action</a></li>
+                          <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                      </li>
+                      <li class ="nav-item collapse " id="navbarNavDropdown">
+                        <a class="nav-link text-light" href="#">Войти</a>
+                      </li>
+                      <li class ="nav-item collapse" id="navbarNavDropdown">
+                        <a class="nav-link text-light" href="#">Регистрация</a>
+                      </li>
+                    </ul>
+                    
+                  
+                  </div>
+                  <form class="container-fluid d-none d-lg-block">
+                    <button class="btn btn-sm btn-outline-light " type="button">Войти</button>
+                    <button class="btn btn-sm btn-outline-light " type="button">Регистрация</button>
+                  </form>
+                </div>
+                
+              </nav>
+            
+                
+    
+   
+        </section>
+        
+        <section class>
+            <div class="container mt-3">
+
+                <div class="row">
+                <div class="gallery col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h1 class="gallery-title">Галерея</h1>
+                </div>
+        
+                <div align="center">
+                    <button class="btn btn-default filter-button" data-filter="all">Все</button>
+                    <button class="btn btn-default filter-button" data-filter="cat-type-A">Кот тип А</button>
+                    <button class="btn btn-default filter-button" data-filter="cat-type-B">Кот тип Б</button>
+                    <button class="btn btn-default filter-button" data-filter="cat-type-C">Кот тип С</button>
+                    <button class="btn btn-default filter-button" data-filter="cat-type-D">Кот тип Д</button>
+                </div>
+        
+        
+
+                    <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter cat-type-A" data-category="cat-type-A">
+                        <a href="https://i.imgur.com/BlDnuSp.jpeg" data-lightbox="image-1">
+                        <img src="https://i.imgur.com/BlDnuSp.jpeg" alt="img-1" class="img-responsive img-fluid">
+                        </a>
+                        <figcaption class = "text-center fz-2">Sofa Cat</figcaption>
+                    </div>
+        
+                    <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter cat-type-A" data-category="cat-type-A">
+                        <a href="https://i.imgur.com/BlDnuSp.jpeg" data-lightbox="image-2">
+                            <img src="https://i.imgur.com/BlDnuSp.jpeg" alt="img-2" class="img-responsive img-fluid">
+                            </a>
+                        <figcaption class = "text-center fz-2">Sofa Cat</figcaption>
+                    </div>
+        
+                    <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter cat-type-B" data-category="cat-type-A">
+                        <a href="https://i.imgur.com/BlDnuSp.jpeg" data-lightbox="image-3">
+                            <img src="https://i.imgur.com/BlDnuSp.jpeg" alt="img-3" class="img-responsive img-fluid">
+                            </a>
+                        <figcaption class = "text-center fz-2">Sofa Cat</figcaption>
+                    </div>
+
+
+                    <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter cat-type-B" data-category="cat-type-B">
+                        <a href="https://i.imgur.com/BlDnuSp.jpeg" data-lightbox="image-4">
+                            <img src="https://i.imgur.com/BlDnuSp.jpeg" alt="img-4" class="img-responsive img-fluid">
+                            </a>
+                        <figcaption class = "text-center fz-2">Sofa Cat</figcaption>
+                    </div>
+        
+                    <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter cat-type-B" data-category="nature">
+                        <a href="https://i.imgur.com/BlDnuSp.jpeg" data-lightbox="image-5">
+                            <img src="https://i.imgur.com/BlDnuSp.jpeg" alt="img-5" class="img-responsive img-fluid">
+                            </a>
+                        <figcaption class = "text-center fz-2">Sofa Cat</figcaption>
+                    </div>
+        
+                    <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter cat-type-C" data-category="nature">
+                        <a href="https://i.imgur.com/BlDnuSp.jpeg" data-lightbox="image-6">
+                            <img src="https://i.imgur.com/BlDnuSp.jpeg" alt="img-6" class="img-responsive img-fluid">
+                            </a>
+                        <figcaption class = "text-center fz-2">Sofa Cat</figcaption>
+                    </div>
+
+
+                    <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter cat-type-D" data-category="nature">
+                        <a href="https://i.imgur.com/BlDnuSp.jpeg" data-lightbox="image-7">
+                            <img src="https://i.imgur.com/BlDnuSp.jpeg" alt="img-7" class="img-responsive img-fluid">
+                            </a>
+                        <figcaption class = "text-center fz-2">Sofa Cat</figcaption>
+                    </div>
+        
+                    <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter cat-type-D" data-category="nature">
+                        <a href="https://i.imgur.com/BlDnuSp.jpeg" data-lightbox="image-8">
+                            <img src="https://i.imgur.com/BlDnuSp.jpeg" alt="img-8" class="img-responsive img-fluid">
+                            </a>
+                        <figcaption class = "text-center fz-2">Sofa Cat</figcaption>
+                    </div>
+        
+                    <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter cat-type-C"  data-category="nature">
+                        <a href="https://i.imgur.com/BlDnuSp.jpeg" data-lightbox="image-9">
+                            <img src="https://i.imgur.com/BlDnuSp.jpeg" alt="img-9" class="img-responsive img-fluid">
+                            </a>
+                        <figcaption class = "text-center fz-2">Sofa Cat</figcaption>
+                    </div>
+
+             
+                    <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter cat-type-C" data-category="nature">
+                        <a href="https://i.imgur.com/BlDnuSp.jpeg" data-lightbox="image-10">
+                            <img src="https://i.imgur.com/BlDnuSp.jpeg" alt="img-10" class="img-responsive img-fluid">
+                            </a>
+                        <figcaption class = "text-center fz-2">Sofa Cat</figcaption>
+                    </div>
+        
+                    <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter cat-type-D" data-category="nature">
+                        <a href="https://i.imgur.com/BlDnuSp.jpeg" data-lightbox="image-11">
+                            <img src="https://i.imgur.com/BlDnuSp.jpeg" alt="img-11" class="img-responsive img-fluid">
+                            </a>
+                        <figcaption class = "text-center fz-2">Sofa Cat</figcaption>
+                    </div>
+        
+                    <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter cat-type-A" data-category="nature">
+                        <a href="https://i.imgur.com/BlDnuSp.jpeg" data-lightbox="image-12">
+                            <img src="https://i.imgur.com/BlDnuSp.jpeg" alt="img-12" class="img-responsive img-fluid">
+                            </a>
+                        <figcaption class = "text-center fz-2">Sofa Cat</figcaption>
+                    </div>
+
+
+            </div>
+        </section>
+        
+
+    
+        <section class ="footer">
+          <footer class="py-3">
+            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+              <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Главная</a></li>
+              <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Питомцы</a></li>
+              <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Покупателям</a></li>
+              <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Галерея</a></li>
+              <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Статьи</a></li>
+              <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Статьи</a></li>
+            </ul>
+            <p class="text-center text-muted">© 2022 Кусь</p>
+          </footer>
+        </section>
+
+        <script
+        src="https://code.jquery.com/jquery-3.6.1.js"
+        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+        crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.2/dist/index.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js" integrity="sha512-k2GFCTbp9rQU412BStrcD/rlwv1PYec9SNrkbQlo6RZCf75l6KcC3UwDY8H5n5hl4v77IDtIPwOk9Dqjs/mMBQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="gallery_script.js"></script>
+</body>
+</html>
