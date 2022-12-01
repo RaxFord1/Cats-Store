@@ -471,10 +471,23 @@ def landing():
     return render_template('landing.html', jwt=request.cookies.get("jwt"))
 
 
+def all_cats_paths():
+    cats = os.listdir(app.config['db_images'])
+    final_paths = []
+    for i in cats:
+        cat_path = os.path.join(app.config['db_images'], i)
+        paths = os.listdir(cat_path)
+
+        final_path = [os.path.join("image", i, j) for j in paths]
+        for j in final_path: 
+            final_paths.append(j)
+    return final_paths
+
 @app.route("/gallery")
 def gallery():
     """Setting page and path"""
-    return render_template('gallery.html', jwt=request.cookies.get("jwt"))
+    paths = all_cats_paths()
+    return render_template('gallery.html', jwt=request.cookies.get("jwt"), paths=paths)
 
 
 @app.route("/admin")

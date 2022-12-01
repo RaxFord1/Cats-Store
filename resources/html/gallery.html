@@ -1,67 +1,25 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<!-- Page content -->
-	<div class="content">
 
-		<div class="wrapper">
+<section class>
+	<div class="container mt-3">
 
-			<div class="page_title">
-				<h1>Галерея</h1>
+		<div class="row">
+			<div class="gallery col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<h1 class="gallery-title">Галерея</h1>
 			</div>
 
-			<div class="container">
-
-				<div class="categories">
-
-
-					<div class="categories__1 category">
-
-						<a href="#" class="category__title"> Наши Коты</a>
-						<div class="category__content">
-							<a href="#"><img src="/img/Cats_old/Timmy.jpg" alt=""></a>
-						</div>
-
-					</div>
-
-					<div class="categories__2 category">
-
-						<a href="#" class="category__title">Наши Кошки</a>
-						<div class="category__content">
-							<a href="#"><img src="/img/Cats_old/Felicia.jpg" alt=""></a>
-						</div>
-
-					</div>
-
-					<div class="categories__3 category">
-
-						<a href="" class="category__title">Наши котята</a>
-						<div class="category__content">
-							<a href=""><img src="/img/kittens/cayenne.png" alt=""></a>
-						</div>
-
-					</div>
-
-					<div class="categories__4 category">
-
-						<a href="" class="category__title">Наши выпускники</a>
-						<div class="category__content">
-							<a href=""><img src="img/vupysk.png" alt=""></a>
-						</div>
-
-					</div>
-
-					<div class="categories__5 category">
-
-						<a href="" class="category__title"></a>
-						<div class="category__content">
-							<a href=""><img src="" alt=""></a>
-						</div>
-
-					</div>
+			{% for path in paths %}
+				<div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter cat-type-A" data-category="cat-type-A">
+					<a data-lightbox="image-1">
+						<img src="{{ path }}" alt="img-1" class="img-responsive img-fluid">
+					</a>
 				</div>
-			</div>
+			{% endfor %}
+
 		</div>
 	</div>
+</section>
 
 {% endblock %}
