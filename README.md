@@ -2,6 +2,8 @@
 
 Installation steps
 
+*With Conda:*
+
 0) install conda from website (https://docs.conda.io/en/latest/miniconda.html)
 
 2) conda create -n web_adaptive
@@ -15,6 +17,16 @@ Installation steps
 6) conda install pytest
 
 7) conda install pyjwt
+
+*With venv*
+
+1) pip install Flask
+
+2) pip install flask-sqlalchemy
+
+3) pip install pytest
+
+4) pip install pyjwt
 
 
 Init project and db
